@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/header_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"
+        android:layout_marginTop="75dp"
+        android:textColor="@color/app_yellow"
+        android:fontFamily="@font/caesardressingregular"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/app_crew"/>
+
+    <TextView
+        android:layout_width="170dp"
+        android:layout_height="150dp"
+        android:textSize="150sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_title"
+        android:textColor="@color/app_yellow"
+        android:background="@drawable/kos_logo" />
+
+    <TextView
+        android:id="@+id/start_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="75dp"
+        android:padding="15dp"
+        android:textAllCaps="false"
+        style="@style/AppTheme.RoundedCornerMaterialButton"
+        android:fontFamily="@font/aqua"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="75dp"
+        android:text="@string/getstart"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
