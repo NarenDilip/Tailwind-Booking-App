@@ -13,4 +13,5 @@
     <string name="app_assigned">Assigned</string>
     <string name="app_lane">Lane 1</string>
     <string name="set_package">Set Package</string>
+    <string name="app_select_players">Select Players</string>
 </resources>
