@@ -17,4 +17,5 @@
     <color name="app_lite_orange">#CE6868</color>
     <color name="app_lite_pink">#C65DBB</color>
     <color name="app_lite_blue">#4D88E1</color>
+    <color name="app_line_color">#545454</color>
 </resources>
