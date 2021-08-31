@@ -105,7 +105,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
               laneSession.noOfPlayers = playerCount
             }
         }, players)
-        playerRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+        playerRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         playerRecyclerView?.adapter = playerAdapter
 
         val timeSlotsAdapter = TimeSlotsAdapter(requireActivity(), object : TimeSlotsAdapter.Callback {
@@ -113,7 +113,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
                laneSession.duration = timeSlot
             }
         }, defaultTimeSlots)
-        timeSlotRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+        timeSlotRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         timeSlotRecyclerView?.adapter = timeSlotsAdapter
     }
 

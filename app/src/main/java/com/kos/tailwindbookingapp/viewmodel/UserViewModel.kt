@@ -9,7 +9,6 @@ import com.tailwind.kos.api.LaneListResponse
 import com.tailwind.kos.model.Response
 import com.tailwind.kos.repositories.LaneRepository
 
-
 class UserViewModel(application: Application) : AndroidViewModel(application) {
     private var laneRepository: LaneRepository? = null
     var laneListResponseLiveData: LiveData<LaneListResponse>? = null
@@ -18,7 +17,8 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     var loginResponseLiveData: LiveData<Response>? = null
     fun init() {
         laneRepository = LaneRepository()
-        laneListResponseLiveData = laneRepository!!.getLanesResponseLiveData() as LiveData<LaneListResponse>
+        laneListResponseLiveData =
+            laneRepository!!.getLanesResponseLiveData() as LiveData<LaneListResponse>
         userRepository = UserRepository()
         loginResponseLiveData = userRepository!!.getLoginResponseLiveData() as LiveData<Response>
     }
@@ -26,6 +26,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     fun getLogin() {
         laneRepository!!.getLanes()
     }
+
     fun getLogin(jsonObject: JsonObject) {
         userRepository!!.getLogin(jsonObject)
     }

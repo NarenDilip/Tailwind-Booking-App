@@ -65,13 +65,12 @@ class LaneListActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                 }
-
             })
         lanesRecyclerView.adapter = adapter
+        lanesRecyclerView.setHasFixedSize(true)
     }
 
     override fun onBackPressed() {
         return
     }
-
 }

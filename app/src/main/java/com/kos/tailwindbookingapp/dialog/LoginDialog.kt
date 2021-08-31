@@ -15,8 +15,6 @@ import com.kos.tailwindbookingapp.Util
 import com.kos.tailwindbookingapp.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.dialog_login.*
 
-
-
 class LoginDialog : DialogFragment() {
     private var userViewModel: UserViewModel? = null
     override fun onCreateView(

@@ -14,21 +14,21 @@
         android:fontFamily="@font/aqua"
         android:text="@string/app_lane"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/setPackageView"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="35dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/oval_shape_yellow"
         android:fontFamily="@font/aqua"
         android:gravity="center_vertical"
-        android:padding="10dp"
+        android:padding="15dp"
         android:text="@string/set_package"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -37,17 +37,17 @@
 
     <TextView
         android:id="@+id/closeView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="35dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/ic_shape"
         android:fontFamily="@font/aqua"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/setPackageView"
+        app:layout_constraintBottom_toBottomOf="@+id/setPackageView"/>
 
     <View
         android:id="@+id/line_view"
@@ -66,7 +66,7 @@
         android:fontFamily="@font/aqua"
         android:text="@string/app_select_players"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line_view" />
 
@@ -74,7 +74,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playerRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:scrollbars="horizontal"
         android:layout_marginTop="25dp"
         android:layout_centerVertical="true"
@@ -92,14 +92,14 @@
         android:fontFamily="@font/aqua"
         android:text="@string/app_set_time"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playerRecyclerView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeSlotRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:scrollbars="horizontal"
         android:layout_marginTop="25dp"
         android:layout_centerVertical="true"
