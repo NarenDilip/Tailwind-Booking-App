@@ -1,7 +1,7 @@
 package com.tailwind.kos.api
 
 import com.google.gson.JsonObject
-import com.tailwind.kos.model.LaneSession
+import com.kos.tailwindbookingapp.model.LaneSession
 import com.tailwind.kos.model.Response
 import retrofit2.Call
 import retrofit2.http.*

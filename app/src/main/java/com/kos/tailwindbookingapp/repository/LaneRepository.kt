@@ -5,7 +5,7 @@ import com.google.gson.JsonObject
 import com.kos.tailwindbookingapp.Constants
 import com.tailwind.kos.api.ApiInterface
 import com.tailwind.kos.api.LaneListResponse
-import com.tailwind.kos.model.LaneSession
+import com.kos.tailwindbookingapp.model.LaneSession
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback

@@ -16,7 +16,7 @@ class PlayerAdapter internal constructor(
 ) :
     RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
 
-
+    private var rowIndex = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.view_player, parent, false)
@@ -26,14 +26,22 @@ class PlayerAdapter internal constructor(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         try {
             val lane = players[holder.adapterPosition]
-            holder.itemView.setOnClickListener {
+            holder.playerView.setOnClickListener {
                 callback.viewPlayer(lane)
+                rowIndex = holder.adapterPosition
+                notifyItemChanged(holder.adapterPosition)
             }
             holder.renderView(lane)
+            if (rowIndex == holder.adapterPosition) {
+                holder.playerView.setBackgroundResource(R.drawable.oval_shape_yellow)
+            } else {
+                holder.playerView.setBackgroundResource(R.drawable.black_circle)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
 
     override fun getItemCount(): Int {
         return players.size
@@ -41,7 +49,7 @@ class PlayerAdapter internal constructor(
 
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        private var playerView: Button = v.findViewById(R.id.playerCountView)
+        var playerView: Button = v.findViewById(R.id.playerCountView)
         fun renderView(player: Int) {
             try {
                 playerView.text = player.toString()

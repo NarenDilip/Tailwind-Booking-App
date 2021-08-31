@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.google.gson.JsonObject
 import com.tailwind.kos.repositories.LaneRepository
-import com.tailwind.kos.model.LaneSession
+import com.kos.tailwindbookingapp.model.LaneSession
 
 class LaneSessionViewModel(application: Application) : AndroidViewModel(application) {
     private var laneRepository: LaneRepository? = null

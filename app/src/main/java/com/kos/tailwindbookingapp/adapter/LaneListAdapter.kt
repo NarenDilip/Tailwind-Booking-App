@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
-import com.tailwind.kos.model.LaneSession
+import com.kos.tailwindbookingapp.model.LaneSession
 
 
 class LaneListAdapter internal constructor(
@@ -44,11 +45,26 @@ class LaneListAdapter internal constructor(
         notifyDataSetChanged()
     }
 
+    fun getColor(lane: LaneSession): Int {
+        if (lane.status == "IDLE") {
+            return ContextCompat.getColor(context,R.color.app_lite_grey)
+        } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
+            return ContextCompat.getColor(context,R.color.burnt_sienna)
+        } else if (lane.status == "TIMEOUT") {
+            return ContextCompat.getColor(context,R.color.pink)
+        }
+        return ContextCompat.getColor(context,R.color.app_lite_green)
+    }
+
+
+
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var laneNameView: AppCompatTextView = v.findViewById(R.id.laneNameView)
+        private var laneTimeView: AppCompatTextView = v.findViewById(R.id.laneTimeView)
         fun renderView(lane: LaneSession) {
             try {
                 laneNameView.text = lane.laneName
+                laneTimeView.setTextColor(getColor(lane))
                 if (lane.isOccupied) {
                     when (lane.status) {
                         "ACTIVE" -> {

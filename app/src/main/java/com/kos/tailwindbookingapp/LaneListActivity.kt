@@ -6,10 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kos.tailwindbookingapp.adapter.LaneListAdapter
 import com.kos.tailwindbookingapp.dialog.LaneDialog
-import com.kos.tailwindbookingapp.dialog.LoginDialog
 import com.kos.tailwindbookingapp.viewmodel.LaneListViewModel
 
-import com.tailwind.kos.model.LaneSession
+import com.kos.tailwindbookingapp.model.LaneSession
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
 

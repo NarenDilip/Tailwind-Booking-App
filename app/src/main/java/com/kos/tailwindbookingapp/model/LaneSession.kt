@@ -1,10 +1,10 @@
-package com.tailwind.kos.model
+package com.kos.tailwindbookingapp.model
 
-import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import com.tailwind.kos.model.Response
 import java.io.Serializable
 
 @Entity(tableName = "laneSession")

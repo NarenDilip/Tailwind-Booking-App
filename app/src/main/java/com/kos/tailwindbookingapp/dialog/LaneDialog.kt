@@ -1,26 +1,20 @@
 package com.kos.tailwindbookingapp.dialog
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.kos.tailwindbookingapp.LaneListActivity
 import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
 import com.kos.tailwindbookingapp.adapter.PlayerAdapter
 import com.kos.tailwindbookingapp.adapter.TimeSlotsAdapter
 import com.kos.tailwindbookingapp.viewmodel.LaneSessionViewModel
-import com.kos.tailwindbookingapp.viewmodel.UserViewModel
-import com.tailwind.kos.model.LaneSession
+import com.kos.tailwindbookingapp.model.LaneSession
 import kotlinx.android.synthetic.main.dialog_lane.*
-import kotlinx.android.synthetic.main.dialog_login.*
 import kotlinx.android.synthetic.main.dialog_login.closeView
 
 
