@@ -1,11 +1,12 @@
 package com.kos.tailwindbookingapp
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kos.tailwindbookingapp.adapter.LaneListAdapter
+import com.kos.tailwindbookingapp.dialog.LaneDialog
+import com.kos.tailwindbookingapp.dialog.LoginDialog
 import com.kos.tailwindbookingapp.viewmodel.LaneListViewModel
 
 import com.tailwind.kos.model.LaneSession
@@ -58,7 +59,8 @@ class LaneListActivity : AppCompatActivity() {
             LaneListAdapter(this@LaneListActivity, object : LaneListAdapter.Callback {
                 override fun viewLane(lane: LaneSession) {
                     try {
-
+                        val laneDialog = LaneDialog(laneSession = lane)
+                        laneDialog.show(supportFragmentManager, "Lane")
                     }catch (e:Exception){
                         e.printStackTrace()
                     }

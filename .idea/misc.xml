@@ -7,12 +7,18 @@
         <entry key="app/src/main/res/drawable/circle_available.xml" value="0.3641666666666667" />
         <entry key="app/src/main/res/drawable/circle_completed.xml" value="0.3641666666666667" />
         <entry key="app/src/main/res/drawable/circle_occupied.xml" value="0.35546875" />
-        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.5110533159947984" />
+        <entry key="app/src/main/res/drawable/dialog_corner_view.xml" value="0.54625" />
+        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.44526315789473686" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.17798913043478262" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.296195652173913" />
+        <entry key="app/src/main/res/layout/dialog_lane.xml" value="0.248046875" />
         <entry key="app/src/main/res/layout/dialog_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_package.xml" value="0.5488826815642458" />
+        <entry key="app/src/main/res/layout/select_player_list.xml" value="0.36474609375" />
+        <entry key="app/src/main/res/layout/select_time_list.xml" value="0.36474609375" />
         <entry key="app/src/main/res/layout/view_lane.xml" value="0.26715686274509803" />
+        <entry key="app/src/main/res/layout/view_player.xml" value="0.20361328125" />
+        <entry key="app/src/main/res/layout/view_time_slot.xml" value="0.20361328125" />
       </map>
     </option>
   </component>

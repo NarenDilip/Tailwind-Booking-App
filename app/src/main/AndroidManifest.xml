@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.TailwindBookingApp">
+        android:theme="@style/Theme.TailWind.FullScreen">
 
         <activity
             android:name=".ui.SplashScreen"

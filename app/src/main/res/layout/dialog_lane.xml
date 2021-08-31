@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/set_package_view"
+        android:id="@+id/setPackageView"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginLeft="40dp"
@@ -32,11 +32,11 @@
         android:text="@string/set_package"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/close_view"
+        app:layout_constraintEnd_toStartOf="@+id/closeView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/close_view"
+        android:id="@+id/closeView"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="40dp"
@@ -72,7 +72,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_player_view"
+        android:id="@+id/playerRecyclerView"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:scrollbars="horizontal"
@@ -94,10 +94,10 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_player_view" />
+        app:layout_constraintTop_toBottomOf="@+id/playerRecyclerView" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_time_view"
+        android:id="@+id/timeSlotRecyclerView"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:scrollbars="horizontal"
