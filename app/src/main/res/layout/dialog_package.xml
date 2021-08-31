@@ -70,123 +70,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line_view" />
 
-    <Button
-        android:id="@+id/btn_one"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_player_view"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:scrollbars="horizontal"
         android:layout_marginTop="25dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         app:layout_constraintStart_toStartOf="@+id/header_players"
-        android:background="@drawable/custom_button_bg"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="1"
-        android:textColor="@color/white"
-        android:fontFamily="@font/sfprodisplayregular"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_players" />
 
-    <Button
-        android:id="@+id/btn_two"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintStart_toEndOf="@+id/btn_one"
-        android:background="@drawable/custom_button_bg"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="2"
+    <TextView
+        android:id="@+id/header_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="35dp"
+        android:fontFamily="@font/aqua"
+        android:text="@string/app_set_time"
         android:textColor="@color/white"
-        android:fontFamily="@font/sfprodisplayregular"
-        app:layout_constraintTop_toBottomOf="@+id/header_players" />
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_player_view" />
 
-    <Button
-        android:id="@+id/btn_three"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_time_view"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:scrollbars="horizontal"
         android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintStart_toEndOf="@+id/btn_two"
-        android:background="@drawable/custom_button_bg"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="3"
-        android:textColor="@color/white"
-        android:fontFamily="@font/sfprodisplayregular"
-        app:layout_constraintTop_toBottomOf="@+id/header_players" />
-
-    <Button
-        android:id="@+id/btn_four"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintStart_toEndOf="@+id/btn_three"
-        android:background="@drawable/custom_button_bg"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="4"
-        android:textColor="@color/white"
-        android:fontFamily="@font/sfprodisplayregular"
-        app:layout_constraintTop_toBottomOf="@+id/header_players" />
-
-    <Button
-        android:id="@+id/btn_five"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintStart_toEndOf="@+id/btn_four"
-        android:background="@drawable/custom_button_bg"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="5"
-        android:textColor="@color/white"
-        android:fontFamily="@font/sfprodisplayregular"
-        app:layout_constraintTop_toBottomOf="@+id/header_players" />
-
-    <Button
-        android:id="@+id/btn_six"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintStart_toEndOf="@+id/btn_five"
-        android:background="@drawable/custom_button_bg"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="6"
-        android:textColor="@color/white"
-        android:fontFamily="@font/sfprodisplayregular"
-        app:layout_constraintTop_toBottomOf="@+id/header_players" />
-
-    <Button
-        android:id="@+id/btn_seven"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintStart_toEndOf="@+id/btn_six"
-        android:background="@drawable/custom_button_bg"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="7"
-        android:textColor="@color/white"
-        android:fontFamily="@font/sfprodisplayregular"
-        app:layout_constraintTop_toBottomOf="@+id/header_players" />
-
-    <Button
-        android:id="@+id/btn_eight"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintStart_toEndOf="@+id/btn_seven"
-        android:background="@drawable/custom_button_bg"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="8"
-        android:textColor="@color/white"
-        android:fontFamily="@font/sfprodisplayregular"
-        app:layout_constraintTop_toBottomOf="@+id/header_players" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintStart_toStartOf="@+id/header_timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_timer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
