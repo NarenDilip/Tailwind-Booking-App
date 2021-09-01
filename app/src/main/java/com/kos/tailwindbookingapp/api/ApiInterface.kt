@@ -10,7 +10,7 @@ interface ApiInterface {
 
     @Headers("Content-Type: application/json; charset=utf-8")
     @POST("login/")
-    fun getLogin(@Body jsonString: JsonObject): Call<Response>
+    fun getLogin(@Body jsonString: JsonObject): Call<LaneSession>
 
     @GET("lanes")
     fun getLaneList(): Call<LaneListResponse>

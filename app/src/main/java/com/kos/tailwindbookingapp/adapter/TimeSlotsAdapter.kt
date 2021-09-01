@@ -30,7 +30,7 @@ class TimeSlotsAdapter internal constructor(
             holder.timeSlotRootView.setOnClickListener {
                 callback.viewTimeSlot(lane)
                 rowIndex = holder.adapterPosition
-                notifyItemChanged(holder.adapterPosition)
+                notifyDataSetChanged()
             }
             holder.renderView(lane)
             if (rowIndex == holder.adapterPosition) {

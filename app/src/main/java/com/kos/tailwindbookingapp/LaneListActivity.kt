@@ -1,15 +1,23 @@
 package com.kos.tailwindbookingapp
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.gson.Gson
 import com.kos.tailwindbookingapp.adapter.LaneListAdapter
 import com.kos.tailwindbookingapp.dialog.LaneDialog
 import com.kos.tailwindbookingapp.viewmodel.LaneListViewModel
 
 import com.kos.tailwindbookingapp.model.LaneSession
+import com.kos.tailwindbookingapp.db.AppDatabase
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import okhttp3.Request
+import okhttp3.Response
+import com.here.oksse.OkSse
+import com.here.oksse.ServerSentEvent
 
 
 class LaneListActivity : AppCompatActivity() {
@@ -21,16 +29,9 @@ class LaneListActivity : AppCompatActivity() {
             setContentView(R.layout.activity_dashboard)
             initAdapter()
             initViewModel()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        try {
             viewModel!!.getLanes()
-        }catch (e:Exception){
+            listenLaneSession(this)
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -43,7 +44,9 @@ class LaneListActivity : AppCompatActivity() {
                 { laneListResponse ->
                     try {
                         if (laneListResponse != null) {
-                            adapter!!.setResults(laneListResponse.lanes!!)
+                           for(lane in laneListResponse.lanes!!){
+                               AppDatabase.getAppDatabase(this).databaseDao().insertLaneSession(lane)
+                           }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -65,8 +68,69 @@ class LaneListActivity : AppCompatActivity() {
                     }
                 }
             })
+        val lanesLiveData = AppDatabase.getAppDatabase(this).databaseDao().listenLanes()
+        adapter?.laneListChangeObserver?.let {
+            lanesLiveData.observe(this, it)
+        }
         lanesRecyclerView.adapter = adapter
         lanesRecyclerView.setHasFixedSize(true)
+    }
+
+    fun listenLaneSession(context: Context) {
+
+        val request: Request = Request.Builder()
+            .url("${Constants.SERVER_PREFIX_RESTAURANT_URL}on_update_sessions")
+            .build()
+        val okSse = OkSse()
+        okSse.newServerSentEvent(request, object : ServerSentEvent.Listener {
+            override fun onOpen(sse: ServerSentEvent?, response: Response?) {
+                Log.d("Open Response", response.toString())
+                AppPreference.put(context, "SSE_LANE_SESSION_ENABLE", 1)
+            }
+
+            override fun onMessage(
+                sse: ServerSentEvent?,
+                id: String?,
+                event: String?,
+                message: String?
+            ) {
+                try {
+                    Log.d("Listen Response", message.toString())
+                    val gson = Gson()
+                    val session = gson.fromJson(message, LaneSession::class.java)
+                    AppDatabase.getAppDatabase(context).databaseDao().insertLaneSession(session)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onComment(sse: ServerSentEvent?, comment: String?) {
+                Log.d("Comment Response", comment.toString())
+            }
+
+            override fun onRetryTime(sse: ServerSentEvent?, milliseconds: Long): Boolean {
+                TODO("Not yet implemented")
+            }
+
+            override fun onRetryError(
+                sse: ServerSentEvent?,
+                throwable: Throwable?,
+                response: Response?
+            ): Boolean {
+                return true
+            }
+
+            override fun onClosed(sse: ServerSentEvent?) {
+                Log.d("Closed Response", sse.toString())
+                AppPreference.put(context, "SSE_LANE_SESSION_ENABLE", 0)
+            }
+
+            override fun onPreRetry(sse: ServerSentEvent?, originalRequest: Request?): Request {
+                return originalRequest!!
+            }
+
+        })
+
     }
 
     override fun onBackPressed() {

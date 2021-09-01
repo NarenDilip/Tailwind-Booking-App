@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     // Okhttp3 for the POST requests
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.github.heremaps:oksse:0.9.0'
 
     def room_version = "2.2.6"
 

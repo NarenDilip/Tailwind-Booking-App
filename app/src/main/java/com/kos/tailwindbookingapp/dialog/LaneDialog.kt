@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.kos.tailwindbookingapp.AppPreference
 import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
 import com.kos.tailwindbookingapp.adapter.PlayerAdapter
@@ -46,28 +48,6 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
 
         setPackageView.setOnClickListener {
             try {
-               /* if(userNameView.text?.trim().toString().isEmpty()){
-                    label.text = "USERNAME CAN'T BE EMPTY"
-                    label.setTextColor(ContextCompat.getColor(requireContext(), R.color.errorColor))
-                    return@setOnClickListener
-                }
-                if(passwordView.text?.trim().toString().isEmpty()){
-                    label.text = "PASSWORD CAN'T BE EMPTY"
-                    label.setTextColor(ContextCompat.getColor(requireContext(), R.color.errorColor))
-                    return@setOnClickListener
-                }
-
-                if(passwordView.text?.trim().toString().length < 6){
-                    label.text = "PASSWORD LENGTH MUST BE ABOVE 6"
-                    label.setTextColor(ContextCompat.getColor(requireContext(), R.color.errorColor))
-                    return@setOnClickListener
-                }
-
-                val jsonObject = JsonObject()
-                jsonObject.addProperty("code", userNameView.text?.trim().toString())
-                jsonObject.addProperty("password", passwordView?.text?.trim().toString())
-                userViewModel!!.getLogin(jsonObject)*/
-
                 activateLaneSession()
             }catch (e:Exception){
                 e.printStackTrace()
@@ -85,7 +65,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
                     try {
                         if (response != null) {
                             if (response.responseMessage == "Success") {
-
+                                dismiss()
                             }
                         }
                     } catch (e: Exception) {
@@ -112,17 +92,33 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
     }
 
     private fun activateLaneSession() {
-        val jsonObject = JsonObject()
 
-        jsonObject.addProperty("lane_id", laneSession.laneId)
-        jsonObject.addProperty("id", laneSession.id)
-        jsonObject.addProperty("created_by", "")
-        jsonObject.addProperty("duration", laneSession.duration)
-        jsonObject.addProperty("extra_time", 0)
-        jsonObject.addProperty("no_of_players",laneSession.noOfPlayers)
+        if(laneSession.id != null){
+            if(laneSession.status == "END"){
+                laneSession.status = "IDLE"
+            }
+            if(laneSession.status == "TIMEOUT"){
+                laneSession.status = "ACTIVE"
+            }
+            val gson = Gson()
+            val laneSessionString = gson.toJson(laneSession)
+            val convertedObject: JsonObject =
+                Gson().fromJson(laneSessionString, JsonObject::class.java)
+            laneSessionViewModel?.updateLaneSession(convertedObject, laneSession.laneId.toString())
+        }else{
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("lane_id", laneSession.laneId)
+            jsonObject.addProperty("id", laneSession.id)
+            jsonObject.addProperty("created_by", AppPreference[requireContext(), "login_user", ""])
+            jsonObject.addProperty("duration", laneSession.duration)
+            jsonObject.addProperty("extra_time", 0)
+            jsonObject.addProperty("no_of_players",laneSession.noOfPlayers)
+            laneSessionViewModel?.updateLaneSession(jsonObject, laneSession.laneId.toString())
+        }
 
 
-        laneSessionViewModel?.updateLaneSession(jsonObject, laneSession.laneId.toString())
+
+
     }
 
     override fun onStart() {

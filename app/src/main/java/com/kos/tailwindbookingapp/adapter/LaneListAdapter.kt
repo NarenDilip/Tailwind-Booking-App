@@ -16,14 +16,22 @@ class LaneListAdapter internal constructor(
     private var callback: Callback
 ) :
     RecyclerView.Adapter<LaneListAdapter.ViewHolder>() {
-    private var laneList: List<LaneSession> = ArrayList()
+    private var laneList: ArrayList<LaneSession> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.view_lane, parent, false)
         )
     }
-
+    val laneListChangeObserver = androidx.lifecycle.Observer<List<LaneSession>> {
+        try {
+            laneList.clear()
+            laneList.addAll(it!!)
+            notifyDataSetChanged()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         try {
             val lane = laneList[holder.adapterPosition]
@@ -38,11 +46,6 @@ class LaneListAdapter internal constructor(
 
     override fun getItemCount(): Int {
         return laneList.size
-    }
-
-    fun setResults(results: List<LaneSession>) {
-        laneList = results
-        notifyDataSetChanged()
     }
 
     fun getColor(lane: LaneSession): Int {

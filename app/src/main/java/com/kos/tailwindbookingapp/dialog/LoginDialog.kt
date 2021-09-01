@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.JsonObject
+import com.kos.tailwindbookingapp.AppPreference
 import com.kos.tailwindbookingapp.LaneListActivity
 import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
@@ -77,6 +78,7 @@ class LoginDialog : DialogFragment() {
                     try {
                         if (response != null ){
                             if( response.responseMessage == "Success") {
+                                AppPreference.put(requireContext(),"login_user", response.id!!)
                                 context?.startActivity(Intent(context, LaneListActivity::class.java))
                             }else{
                                 label.text = "INCORRECT USERNAME / PASSWORD"

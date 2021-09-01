@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.google.gson.JsonObject
+import com.kos.tailwindbookingapp.model.LaneSession
 import com.kos.tailwindbookingapp.repository.UserRepository
 import com.tailwind.kos.api.LaneListResponse
 import com.tailwind.kos.model.Response
@@ -14,13 +15,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     var laneListResponseLiveData: LiveData<LaneListResponse>? = null
 
     private var userRepository: UserRepository? = null
-    var loginResponseLiveData: LiveData<Response>? = null
+    var loginResponseLiveData: LiveData<LaneSession>? = null
     fun init() {
         laneRepository = LaneRepository()
         laneListResponseLiveData =
             laneRepository!!.getLanesResponseLiveData() as LiveData<LaneListResponse>
         userRepository = UserRepository()
-        loginResponseLiveData = userRepository!!.getLoginResponseLiveData() as LiveData<Response>
+        loginResponseLiveData = userRepository!!.getLoginResponseLiveData() as LiveData<LaneSession>
     }
 
     fun getLogin() {

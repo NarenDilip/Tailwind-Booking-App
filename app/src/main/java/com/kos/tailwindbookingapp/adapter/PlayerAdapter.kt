@@ -29,7 +29,7 @@ class PlayerAdapter internal constructor(
             holder.playerView.setOnClickListener {
                 callback.viewPlayer(lane)
                 rowIndex = holder.adapterPosition
-                notifyItemChanged(holder.adapterPosition)
+                notifyDataSetChanged()
             }
             holder.renderView(lane)
             if (rowIndex == holder.adapterPosition) {
