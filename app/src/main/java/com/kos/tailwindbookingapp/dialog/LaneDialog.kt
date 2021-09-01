@@ -65,11 +65,15 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
                     try {
                         if (response != null) {
                             if (response.responseMessage == "Success") {
-                                dismiss()
+                                if(!laneSession.isOccupied){
+                                    val passCodeDialog = PassCodeDialog(laneSession = response)
+                                    passCodeDialog.show(childFragmentManager, "Lane")
+                                }else{
+                                    dismiss()
+                                }
                             }
                         }
                     } catch (e: Exception) {
-
                         e.printStackTrace()
                     }
                 })
@@ -89,10 +93,14 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         }, defaultTimeSlots)
         timeSlotRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         timeSlotRecyclerView?.adapter = timeSlotsAdapter
+
+        if(laneSession.isOccupied){
+            playerAdapter.updatePlayerView(players.indexOf(laneSession.noOfPlayers))
+            timeSlotsAdapter.updateTimeView(defaultTimeSlots.indexOf(laneSession.duration))
+        }
     }
 
     private fun activateLaneSession() {
-
         if(laneSession.id != null){
             if(laneSession.status == "END"){
                 laneSession.status = "IDLE"

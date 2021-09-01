@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
 
@@ -28,20 +29,25 @@ class PlayerAdapter internal constructor(
             val lane = players[holder.adapterPosition]
             holder.playerView.setOnClickListener {
                 callback.viewPlayer(lane)
-                rowIndex = holder.adapterPosition
-                notifyDataSetChanged()
+                updatePlayerView(holder.adapterPosition)
             }
             holder.renderView(lane)
             if (rowIndex == holder.adapterPosition) {
                 holder.playerView.setBackgroundResource(R.drawable.oval_shape_yellow)
+                holder.playerView.setTextColor(ContextCompat.getColor(context, R.color.black))
             } else {
                 holder.playerView.setBackgroundResource(R.drawable.black_circle)
+                holder.playerView.setTextColor(ContextCompat.getColor(context, R.color.white))
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
+    fun updatePlayerView(position: Int){
+        rowIndex = position
+        notifyDataSetChanged()
+    }
 
     override fun getItemCount(): Int {
         return players.size

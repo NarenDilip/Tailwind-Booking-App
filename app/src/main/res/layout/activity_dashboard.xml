@@ -156,38 +156,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginEnd="30dp"
             android:fontFamily="@font/sfprodisplayregular"
             android:text="@string/app_completed"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/blue_circle"
             app:layout_constraintTop_toBottomOf="@+id/header_name" />
 
-        <ImageView
-            android:id="@+id/blue_circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/blue_circle"
-            app:layout_constraintEnd_toStartOf="@+id/extension"
-            app:layout_constraintTop_toBottomOf="@+id/header_name" />
-
-
-        <TextView
-            android:id="@+id/extension"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="50dp"
-            android:fontFamily="@font/sfprodisplayregular"
-            android:text="@string/app_extension"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header_name" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lanesRecyclerView"

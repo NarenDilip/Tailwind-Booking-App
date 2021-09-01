@@ -7,7 +7,7 @@
     android:background="@color/app_background_dialog">
 
     <TextView
-        android:id="@+id/close_view"
+        android:id="@+id/closeView"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="40dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/app_passcode"
+        android:id="@+id/lanePassCodeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sfprodisplayregular"
@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/app_lane_number"
+        android:id="@+id/laneNumberView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sfprodisplayregular"
@@ -45,7 +45,7 @@
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_passcode" />
+        app:layout_constraintTop_toBottomOf="@+id/lanePassCodeView" />
 
     <TextView
         android:id="@+id/app_lane_text"
@@ -57,6 +57,6 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_lane_number" />
+        app:layout_constraintTop_toBottomOf="@+id/laneNumberView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

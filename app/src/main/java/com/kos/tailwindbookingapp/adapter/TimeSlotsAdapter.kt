@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
 
@@ -29,19 +30,27 @@ class TimeSlotsAdapter internal constructor(
             val lane = timeSlots[holder.adapterPosition]
             holder.timeSlotRootView.setOnClickListener {
                 callback.viewTimeSlot(lane)
-                rowIndex = holder.adapterPosition
-                notifyDataSetChanged()
+                updateTimeView(holder.adapterPosition)
             }
             holder.renderView(lane)
             if (rowIndex == holder.adapterPosition) {
                 holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_yellow)
+                holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.black))
+                holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.black))
             } else {
                 holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_black)
+                holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.white))
+                holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.white))
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+    fun updateTimeView(position: Int){
+        rowIndex = position
+        notifyDataSetChanged()
+    }
+
 
     override fun getItemCount(): Int {
         return timeSlots.size
@@ -50,6 +59,7 @@ class TimeSlotsAdapter internal constructor(
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         var timeSlotView: AppCompatTextView = v.findViewById(R.id.timeSlotView)
+        var minLabelView: AppCompatTextView = v.findViewById(R.id.minLabelView)
         var timeSlotRootView: ConstraintLayout = v.findViewById(R.id.timeSlotRootView)
         fun renderView(player: Int) {
             try {

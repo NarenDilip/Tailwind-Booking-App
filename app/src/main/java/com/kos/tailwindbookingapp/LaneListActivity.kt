@@ -76,8 +76,7 @@ class LaneListActivity : AppCompatActivity() {
         lanesRecyclerView.setHasFixedSize(true)
     }
 
-    fun listenLaneSession(context: Context) {
-
+    private fun listenLaneSession(context: Context) {
         val request: Request = Request.Builder()
             .url("${Constants.SERVER_PREFIX_RESTAURANT_URL}on_update_sessions")
             .build()
@@ -92,8 +91,7 @@ class LaneListActivity : AppCompatActivity() {
                 sse: ServerSentEvent?,
                 id: String?,
                 event: String?,
-                message: String?
-            ) {
+                message: String?) {
                 try {
                     Log.d("Listen Response", message.toString())
                     val gson = Gson()
@@ -115,8 +113,7 @@ class LaneListActivity : AppCompatActivity() {
             override fun onRetryError(
                 sse: ServerSentEvent?,
                 throwable: Throwable?,
-                response: Response?
-            ): Boolean {
+                response: Response?): Boolean {
                 return true
             }
 
