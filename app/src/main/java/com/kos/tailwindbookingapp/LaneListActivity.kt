@@ -18,6 +18,7 @@ import okhttp3.Request
 import okhttp3.Response
 import com.here.oksse.OkSse
 import com.here.oksse.ServerSentEvent
+import com.kos.tailwindbookingapp.dialog.ConfirmationDialog
 
 
 class LaneListActivity : AppCompatActivity() {
@@ -26,14 +27,35 @@ class LaneListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
-            setContentView(R.layout.activity_dashboard)
-            initAdapter()
-            initViewModel()
-            viewModel!!.getLanes()
-            listenLaneSession(this)
+            setupView()
+            setOnClickListeners()
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun setOnClickListeners() {
+        exitView.setOnClickListener {
+            val confirmationDialog = ConfirmationDialog(object: ConfirmationDialog.Callback{
+                override fun yes() {
+                    finishAffinity()
+                }
+
+                override fun no() {
+
+                }
+
+            }, "Are you sure? Do you want to exit the app?")
+            confirmationDialog.show(supportFragmentManager, "Confirm")
+        }
+    }
+
+    private fun setupView() {
+        setContentView(R.layout.activity_dashboard)
+        initAdapter()
+        initViewModel()
+        viewModel!!.getLanes()
+        listenLaneSession(this)
     }
 
     private fun initViewModel() {

@@ -26,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/btn_one"
+            android:id="@+id/exitView"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginBottom="25dp"
