@@ -5,107 +5,184 @@
     android:layout_height="match_parent"
     android:background="@color/app_background_dialog">
 
-    <TextView
-        android:id="@+id/header_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="35dp"
-        android:fontFamily="@font/aqua"
-        android:text="@string/app_lane"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/setPackageView"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/oval_shape_yellow"
-        android:fontFamily="@font/aqua"
-        android:gravity="center_vertical"
-        android:padding="15dp"
-        android:text="@string/set_package"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/closeView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/closeView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/ic_shape"
-        android:fontFamily="@font/aqua"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/setPackageView"
-        app:layout_constraintBottom_toBottomOf="@+id/setPackageView"/>
-
-    <View
-        android:id="@+id/line_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lane_dialog_view"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="30dp"
-        android:background="@color/app_line_color"
-        app:layout_constraintTop_toBottomOf="@+id/header_title" />
-
-    <TextView
-        android:id="@+id/header_players"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="35dp"
-        android:fontFamily="@font/aqua"
-        android:text="@string/app_select_players"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line_view" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playerRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:scrollbars="horizontal"
-        android:layout_marginTop="25dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        app:layout_constraintStart_toStartOf="@+id/header_players"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_players" />
-
-    <TextView
-        android:id="@+id/header_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="35dp"
-        android:fontFamily="@font/aqua"
-        android:text="@string/app_set_time"
-        android:textColor="@color/white"
-        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playerRecyclerView" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/timeSlotRecyclerView"
-        android:layout_width="0dp"
+        <TextView
+            android:id="@+id/header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="35dp"
+            android:fontFamily="@font/aqua"
+            android:text="@string/app_lane"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/setPackageView"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/oval_shape_yellow"
+            android:fontFamily="@font/aqua"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:text="@string/set_package"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/closeView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/closeView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/ic_shape"
+            android:fontFamily="@font/aqua"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/setPackageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/setPackageView" />
+
+        <View
+            android:id="@+id/line_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@color/app_line_color"
+            app:layout_constraintTop_toBottomOf="@+id/header_title" />
+
+        <TextView
+            android:id="@+id/header_players"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="35dp"
+            android:fontFamily="@font/aqua"
+            android:text="@string/app_select_players"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playerRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="25dp"
+            android:scrollbars="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/header_players"
+            app:layout_constraintTop_toBottomOf="@+id/header_players" />
+
+        <TextView
+            android:id="@+id/header_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="35dp"
+            android:fontFamily="@font/aqua"
+            android:text="@string/app_set_time"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/playerRecyclerView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/timeSlotRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="25dp"
+            android:scrollbars="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/header_timer"
+            app:layout_constraintTop_toBottomOf="@+id/header_timer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/passcode_dialog_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="horizontal"
-        android:layout_marginTop="25dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        app:layout_constraintStart_toStartOf="@+id/header_timer"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_timer" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/passcodecloseView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/ic_shape"
+            android:fontFamily="@font/aqua"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lanePassCodeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sfprodisplayregular"
+            android:text="@string/app_lane_passcode"
+            android:textColor="@color/app_yellow"
+            android:textSize="60sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/laneNumberView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sfprodisplayregular"
+            android:text="@string/app_lane_text"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lanePassCodeView" />
+
+        <TextView
+            android:id="@+id/app_lane_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sfprodisplayregular"
+            android:text="@string/app_lane_summary"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/laneNumberView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
