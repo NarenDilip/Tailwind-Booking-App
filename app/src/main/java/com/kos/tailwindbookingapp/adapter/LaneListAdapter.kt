@@ -1,14 +1,19 @@
 package com.kos.tailwindbookingapp.adapter
 
 import android.content.Context
+import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
+import com.kos.tailwindbookingapp.Util
 import com.kos.tailwindbookingapp.model.LaneSession
+import java.util.concurrent.TimeUnit
 
 
 class LaneListAdapter internal constructor(
@@ -33,11 +38,34 @@ class LaneListAdapter internal constructor(
         }
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         try {
             val lane = laneList[holder.adapterPosition]
             holder.itemView.setOnClickListener {
                 callback.viewLane(lane)
             }
+            if(holder.timer != null){
+                holder.timer?.cancel()
+            }
+            var ss = Util.getTimeInMilliSeconds(lane)
+            holder.timer = object : CountDownTimer(600000, 1000) {
+                // 500 means, onTick function will be called at every 500 milliseconds
+                override fun onTick(leftTimeInMilliseconds: Long) {
+                    /* val seconds = leftTimeInMilliseconds / 1000
+                     val barVal: Int = 100 - ((seconds / 60 * 100).toInt() + (seconds % 60).toInt())*/
+                    // barTimer.setProgress
+                    val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(leftTimeInMilliseconds)
+                   // var ss = Util.getTimeInMilliSeconds(lane)
+                    var progress = (ss / 100).toInt()
+                  //  Log.v("seconds","==="+progress+"=="+ss)
+                    holder.progressBar.progress = seconds.toInt()
+                    // format the textview to show the easily readable format
+                }
+
+                override fun onFinish() {
+
+                }
+            }.start()
             holder.renderView(lane)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -62,8 +90,13 @@ class LaneListAdapter internal constructor(
 
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        private var laneNameView: AppCompatTextView = v.findViewById(R.id.laneNameView)
+
+        var laneNameView: AppCompatTextView = v.findViewById(R.id.laneNameView)
         private var laneTimeView: AppCompatTextView = v.findViewById(R.id.laneTimeView)
+         var progressBar:ProgressBar = v.findViewById(R.id.progressBar)
+        var timer:CountDownTimer?=null
+        var increment:Int= 0
+        var bool= false
         fun renderView(lane: LaneSession) {
             try {
                 laneNameView.text = lane.laneName
@@ -83,10 +116,20 @@ class LaneListAdapter internal constructor(
                 } else {
                     laneNameView.setBackgroundResource(R.drawable.circle_available)
                 }
+                laneNameView.setOnClickListener {
+                    timer?.cancel()
+                    if(bool){
+                        timer?.start()
+                        notifyDataSetChanged()
+                    }
+                    bool = true
+
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
+
     }
 
     interface Callback {
