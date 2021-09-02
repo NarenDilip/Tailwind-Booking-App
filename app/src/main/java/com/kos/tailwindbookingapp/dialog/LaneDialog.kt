@@ -14,11 +14,10 @@ import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
 import com.kos.tailwindbookingapp.adapter.PlayerAdapter
 import com.kos.tailwindbookingapp.adapter.TimeSlotsAdapter
-import com.kos.tailwindbookingapp.viewmodel.LaneSessionViewModel
 import com.kos.tailwindbookingapp.model.LaneSession
+import com.kos.tailwindbookingapp.viewmodel.LaneSessionViewModel
 import kotlinx.android.synthetic.main.dialog_lane.*
 import kotlinx.android.synthetic.main.dialog_login.closeView
-
 
 class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
     private var laneSessionViewModel: LaneSessionViewModel? = null
@@ -90,13 +89,14 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
             override fun viewTimeSlot(timeSlot: Int) {
                laneSession.duration = timeSlot
             }
-        }, defaultTimeSlots)
+        }, defaultTimeSlots,view)
         timeSlotRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         timeSlotRecyclerView?.adapter = timeSlotsAdapter
 
         if(laneSession.isOccupied){
             playerAdapter.updatePlayerView(players.indexOf(laneSession.noOfPlayers))
-            timeSlotsAdapter.updateTimeView(defaultTimeSlots.indexOf(laneSession.duration))
+//            timeSlotsAdapter.updateTimeView(defaultTimeSlots.indexOf(laneSession.duration))
+
         }
     }
 
