@@ -2,11 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/app_lite_grey"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/menu_layer"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
         android:background="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/list_layer"
@@ -37,12 +38,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/list_layer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/app_dashboard_dialog"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="0.1dp"
         app:layout_constraintStart_toEndOf="@+id/menu_layer"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -91,7 +94,7 @@
             android:fontFamily="@font/sfprodisplayregular"
             android:text="@string/app_available"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/grey_circle"
             app:layout_constraintTop_toBottomOf="@+id/header_name" />
 
@@ -114,7 +117,7 @@
             android:fontFamily="@font/sfprodisplayregular"
             android:text="@string/app_assigned"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/orange_circle"
             app:layout_constraintTop_toBottomOf="@+id/header_name" />
 
@@ -137,7 +140,7 @@
             android:fontFamily="@font/sfprodisplayregular"
             android:text="@string/app_occupied"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/pink_circle"
             app:layout_constraintTop_toBottomOf="@+id/header_name" />
 
@@ -160,7 +163,7 @@
             android:fontFamily="@font/sfprodisplayregular"
             android:text="@string/app_completed"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header_name" />
 

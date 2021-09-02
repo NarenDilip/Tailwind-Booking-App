@@ -24,4 +24,5 @@
     <color name="orange">#CE6868</color>
     <color name="peach">#67C5AC</color>
     <color name="burnt_sienna">#F47555</color>
+    <color name="line_border_color">#232323</color>
 </resources>

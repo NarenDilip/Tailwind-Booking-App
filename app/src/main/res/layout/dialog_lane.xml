@@ -5,6 +5,20 @@
     android:layout_height="match_parent"
     android:background="@color/app_background_dialog">
 
+    <TextView
+        android:id="@+id/closeView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/ic_shape"
+        android:fontFamily="@font/aqua"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lane_dialog_view"
         android:layout_width="match_parent"
@@ -18,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="43dp"
             android:fontFamily="@font/aqua"
             android:text="@string/app_lane"
             android:textColor="@color/white"
@@ -32,7 +46,7 @@
             android:layout_height="45dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="35dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginRight="75dp"
             android:background="@drawable/oval_shape_yellow"
             android:fontFamily="@font/aqua"
             android:gravity="center_vertical"
@@ -40,22 +54,8 @@
             android:text="@string/set_package"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/closeView"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/closeView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/ic_shape"
-            android:fontFamily="@font/aqua"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/setPackageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/setPackageView" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/line_view"
@@ -76,9 +76,36 @@
             android:fontFamily="@font/aqua"
             android:text="@string/app_select_players"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line_view" />
+
+        <TextView
+            android:id="@+id/player_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="35dp"
+            android:fontFamily="@font/caesardressingregular"
+            android:text="@string/app_player_empty"
+            android:textColor="@color/burnt_sienna"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/header_players"
+            app:layout_constraintTop_toBottomOf="@+id/line_view" />
+
+        <TextView
+            android:id="@+id/player_passcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="30dp"
+            android:fontFamily="@font/caesardressingregular"
+            android:text="PASS CODE : 202"
+            android:textColor="@color/burnt_sienna"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line_view" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playerRecyclerView"
@@ -101,8 +128,21 @@
             android:fontFamily="@font/aqua"
             android:text="@string/app_set_time"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/playerRecyclerView" />
+
+        <TextView
+            android:id="@+id/timer_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="35dp"
+            android:fontFamily="@font/caesardressingregular"
+            android:text="@string/app_time_empty"
+            android:textColor="@color/burnt_sienna"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/header_timer"
             app:layout_constraintTop_toBottomOf="@+id/playerRecyclerView" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -119,11 +159,11 @@
             app:layout_constraintTop_toBottomOf="@+id/header_timer" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/popupmessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/popupmessage"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timeSlotRecyclerView"/>
+            app:layout_constraintTop_toBottomOf="@+id/timeSlotRecyclerView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -131,8 +171,8 @@
         android:id="@+id/passcode_dialog_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -143,6 +183,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="35dp"
+            android:visibility="gone"
             android:layout_marginRight="30dp"
             android:background="@drawable/ic_shape"
             android:fontFamily="@font/aqua"
