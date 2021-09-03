@@ -27,6 +27,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
     var defaultTimeSlots = arrayListOf(30, 90, 120, 150, 180, 210, 240)
     var playerPosition:Int = -1
     var timeSlotPosition:Int = -1
+    var timeSlotsAdapter:TimeSlotsAdapter?=null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +55,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         }
         setPackageView.setOnClickListener {
             try {
-                activateLaneSession()
+                validateLaneSession()
             }catch (e:Exception){
                 e.printStackTrace()
             }
@@ -62,6 +63,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         endSessionView.setOnClickListener {
             try{
                 laneSession.status = "END"
+                laneSession.extraTime = 0
                 updateLaneSession(laneSession)
             }catch (e:Exception){
                 e.printStackTrace()
@@ -101,7 +103,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         }, players)
         playerRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         playerRecyclerView?.adapter = playerAdapter
-        val timeSlotsAdapter = TimeSlotsAdapter(requireActivity(), object : TimeSlotsAdapter.Callback {
+        timeSlotsAdapter = TimeSlotsAdapter(requireActivity(), object : TimeSlotsAdapter.Callback {
             override fun viewTimeSlot(timeSlot: Int, position: Int) {
                 timeSlotPosition = position
                 laneSession.duration = timeSlot
@@ -110,25 +112,43 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
             override fun laneTimeExtend() {
                 val laneTimeSlotExtendDialog = LaneTimeSlotExtendDialog(laneSession = laneSession,
                     callBack = object:LaneTimeSlotExtendDialog.Callback{
-
                         override fun extendTimeSlot(time: Int) {
-
+                            updateTimeSlots(time)
                         }
 
                     })
                 laneTimeSlotExtendDialog.show(childFragmentManager, "Time Extend")
             }
-        }, defaultTimeSlots,view)
+        }, defaultTimeSlots,view, laneSession)
         timeSlotRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         timeSlotRecyclerView?.adapter = timeSlotsAdapter
         if(laneSession.isOccupied){
             endSessionView.visibility = View.VISIBLE
             playerAdapter.updatePlayerView(players.indexOf(laneSession.noOfPlayers))
-           timeSlotsAdapter.updateTimeView(defaultTimeSlots.indexOf(laneSession.duration))
+           timeSlotsAdapter!!.updateTimeView(defaultTimeSlots.indexOf(laneSession.duration))
+        }
+        if(defaultTimeSlots.indexOf(laneSession.duration) == -1){
+            updateTimeSlots(laneSession.duration)
         }
     }
 
-    private fun activateLaneSession() {
+    private fun updateTimeSlots(extraTime:Int){
+        val updatedTime =
+            defaultTimeSlots[
+                    timeSlotPosition] +
+                    extraTime
+        defaultTimeSlots
+            .add(updatedTime)
+        val hashSet = HashSet<Int>()
+        hashSet.addAll(defaultTimeSlots)
+        defaultTimeSlots.clear()
+        defaultTimeSlots.addAll(hashSet)
+        defaultTimeSlots.sort()
+        timeSlotsAdapter?.notifyDataSetChanged()
+        timeSlotsAdapter!!.updateTimeView(defaultTimeSlots.indexOf(updatedTime))
+    }
+
+    private fun validateLaneSession() {
         if(playerPosition == -1){
             player_empty.visibility = View.VISIBLE
             return
@@ -139,24 +159,27 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
             return
         }
         timer_empty.visibility = View.GONE
-        if(laneSession.id != null){
-            if(laneSession.status == "END"){
-                laneSession.status = "IDLE"
-            }
-            if(laneSession.status == "TIMEOUT"){
-                laneSession.status = "ACTIVE"
-            }
+
+        if(laneSession.status == "TIMEOUT"){
+            laneSession.status = "ACTIVE"
+            updateLaneSession(laneSession)
+        } else if(laneSession.status == "IDLE" || laneSession.status == "ACTIVE"){
+            laneSession.status = "ACTIVE"
             updateLaneSession(laneSession)
         }else{
-            val jsonObject = JsonObject()
-            jsonObject.addProperty("lane_id", laneSession.laneId)
-            jsonObject.addProperty("id", laneSession.id)
-            jsonObject.addProperty("created_by", AppPreference[requireContext(), "login_user", ""])
-            jsonObject.addProperty("duration", laneSession.duration)
-            jsonObject.addProperty("extra_time", 0)
-            jsonObject.addProperty("no_of_players",laneSession.noOfPlayers)
-            laneSessionViewModel?.updateLaneSession(jsonObject, laneSession.laneId.toString())
+            postLaneSessionRequest()
         }
+
+    }
+    private fun postLaneSessionRequest(){
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("lane_id", laneSession.laneId)
+        jsonObject.addProperty("created_by", AppPreference[requireContext(), "login_user", ""])
+        jsonObject.addProperty("duration", laneSession.duration)
+        jsonObject.addProperty("extra_time", 0)
+        jsonObject.addProperty("no_of_players",laneSession.noOfPlayers)
+        print("Update Lane session - $jsonObject");
+        laneSessionViewModel?.updateLaneSession(jsonObject, laneSession.laneId.toString())
     }
 
     private fun updateLaneSession(laneSession: LaneSession){

@@ -78,9 +78,6 @@ object Util {
     fun getIdleTime(lane: LaneSession?): Long {
         return getCurrentTime() - getCreatedTime(lane!!)
     }
-    fun getRemainingTimeInMilliseconds(lane: LaneSession?): Long {
-        return (getEndActiveTime(lane!!) - getCurrentTime())
-    }
 
     fun getTimeInMilliSeconds(lane: LaneSession): Double {
         if (lane.status == "IDLE") {
@@ -94,6 +91,12 @@ object Util {
         } else {
             return 0.0
         }
+    }
+
+
+
+    fun getRemainingTimeInMilliseconds(lane: LaneSession?): Long {
+        return getEndActiveTime(lane!!) - System.currentTimeMillis()
     }
 
     fun getTimeMilliSeconds(lane: LaneSession): Long {

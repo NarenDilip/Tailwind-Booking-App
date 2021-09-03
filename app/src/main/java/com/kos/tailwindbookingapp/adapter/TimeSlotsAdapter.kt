@@ -2,10 +2,7 @@ package com.kos.tailwindbookingapp.adapter
 
 import android.content.Context
 import android.graphics.Point
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ListPopupWindow
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -15,17 +12,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
-import com.kos.tailwindbookingapp.dialog.ConfirmationDialog
-import com.kos.tailwindbookingapp.dialog.LaneTimeSlotExtendDialog
+import com.kos.tailwindbookingapp.Util
+import com.kos.tailwindbookingapp.model.LaneSession
 
 class TimeSlotsAdapter internal constructor(
     private val context: Context,
     private var callback: Callback,
     private val timeSlots: ArrayList<Int>,
-    val view: View
+    val view: View,
+    val laneSession: LaneSession
 ) :
     RecyclerView.Adapter<TimeSlotsAdapter.ViewHolder>() {
-
     private var rowIndex = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -41,17 +38,22 @@ class TimeSlotsAdapter internal constructor(
                 updateTimeView(holder.adapterPosition)
                 showPopup(holder)
             }
-
             holder.renderView(lane)
             if (rowIndex == holder.adapterPosition) {
                 holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_yellow)
                 holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.black))
                 holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.black))
-
             } else {
-                holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_black)
-                holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.white))
-                holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.white))
+                if (laneSession.startedOn != null && validateTimeSlot(laneSession, position,
+                        timeSlots)) {
+                    holder.timeSlotRootView.isEnabled = false
+                    holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.app_lite_grey))
+                    holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.app_lite_grey))
+                } else {
+                    holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_black)
+                    holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.white))
+                    holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.white))
+                }
             }
 
         } catch (e: Exception) {
@@ -59,21 +61,57 @@ class TimeSlotsAdapter internal constructor(
         }
     }
 
-    fun updateTimeView(position: Int) {
+    fun updateTimeView(position: Int, holder: ViewHolder? = null) {
         rowIndex = position
+        //showPopup(view)
         notifyDataSetChanged()
     }
 
+    private fun getRemainingTime(laneSession: LaneSession): String {
+        if (laneSession.status == "ACTIVE" || laneSession.status == "IDLE") {
+            if (laneSession.startedOn != null) {
+                val min =
+                    (Util.getRemainingTimeInMilliseconds(laneSession) / 1000) / 60
+                return "$min mins left";
+            }
+            return "Yet to start";
+        } else {
+            return "Time Elapsed";
+        }
+    }
+
+    private fun validateTimeSlot(
+        lane: LaneSession,
+        index: Int,
+        timeSlots: ArrayList<Int>
+    ): Boolean {
+        return if (lane.status == "ACTIVE" || lane.status == "TIMEOUT") {
+            if (lane.status == "ACTIVE") {
+                val min =
+                    (Util.getRemainingTimeInMilliseconds(laneSession) / 1000) / 60
+                lane.duration - min > timeSlots[index]
+            } else {
+                lane.duration > timeSlots[index]
+            }
+        } else {
+            false
+        }
+    }
+
+
     private fun showPopup(holder: ViewHolder) {
-        val mPopupwindow: PopupWindow
+        var mPopupwindow: PopupWindow? = null
         val v: View = LayoutInflater.from(context).inflate(
             R.layout.select_mins_extender,
             view.findViewById<ConstraintLayout>(R.id.popupmessage),
             false
         )
+        val remainingTimeView = v.findViewById<TextView>(R.id.remainingTimeView)
+        remainingTimeView.text = getRemainingTime(laneSession = laneSession)
 
         val extendView = v.findViewById<TextView>(R.id.extendView)
         extendView.setOnClickListener {
+            mPopupwindow!!.dismiss()
             callback.laneTimeExtend()
         }
 
