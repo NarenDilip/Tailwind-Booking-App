@@ -112,16 +112,43 @@ object Util {
                 calculatedOutput = 0
             }
             return calculatedOutput.toLong();
-
-
 //            return getProgressinMilli(getEndTime(getCreatedTime(lane)), getCreatedTime(lane))
         } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
-            return getActiveProgress(getEndActiveTime(lane), getStartedTime(lane).toInt()).toLong()
+
+            var calculatedOutput = 0
+            //First Step
+            val endTime = getEndActiveTime(lane)
+            var startTime = getStartedTime(lane)
+            val curretTime = System.currentTimeMillis()
+            if (endTime > curretTime) {
+                calculatedOutput = (endTime - curretTime).toInt()
+            } else {
+                calculatedOutput = 0
+            }
+            return calculatedOutput.toLong()
+//            return getActiveProgress(getEndActiveTime(lane), getStartedTime(lane).toInt()).toLong()
+
         } else if (lane.status == "TIMEOUT") {
-            return getProgressinMilli(
-                getEndTime(getTimeoutStartedTime(lane)),
-                getTimeoutStartedTime(lane)
-            )
+            var calculatedOutput = 0
+            //First Step
+            val createdTime = getTimeoutStartedTime(lane)
+            //Secons Step
+            val addOnTime = getEndTime(createdTime)
+            //Third Step
+            val curretTime = System.currentTimeMillis()
+            //Fourth Step
+            if (addOnTime < curretTime) {
+                calculatedOutput = (curretTime - addOnTime).toInt()
+            } else {
+                calculatedOutput = 0
+            }
+            return calculatedOutput.toLong();
+
+
+//            return getProgressinMilli(
+//                getEndTime(getTimeoutStartedTime(lane)),
+//                getTimeoutStartedTime(lane)
+//            )
         } else {
             return 0
         }

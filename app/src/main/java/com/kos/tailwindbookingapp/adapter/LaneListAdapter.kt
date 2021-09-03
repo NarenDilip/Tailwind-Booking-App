@@ -1,6 +1,7 @@
 package com.kos.tailwindbookingapp.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
@@ -64,17 +65,32 @@ class LaneListAdapter internal constructor(
                     var progress = (totalCalculatedtimeinMillis / 100).toInt()
 
                     var totalCalculatedtimeinPercentage = Util.getTimeInMilliSeconds(lane)
-//                    val roundOff = String.format("%.0f", totalCalculatedtimeinPercentage)
-//
-//                    var Callc = totalCalculatedtimeinPercentage.toString()
-//                    if (Callc.contains("E-")) {
-//                        var ups = Callc.replace("E-", "")
-//                        var dsds = Callc.toInt()
-//                    }
+                    holder.laneTimeView.text = getTimeLeft(lane = lane)
+                    if (lane.status == "ACTIVE") {
+                        var Callc = totalCalculatedtimeinPercentage.toString()
+                        if (Callc.contains("E-")) {
+                            var ups = Callc.replace("E-", "")
+
+                            try {
+                                val parsedInt = ups.toDouble()
+                                val parsedI = parsedInt.toInt() + 1
+                                holder.progressBar.progress = parsedI
+                                println("The parsed int is $parsedInt")
+                            } catch (nfe: NumberFormatException) {
+                                // not a valid int
+                            }
+
+                        } else {
+                            holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
+                        }
+                    } else {
+                        holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
+                    }
+
 
 //                    holder.progressBar.max = 100
 //                    Log.v("seconds","==="+progress+"=="+ss)
-                    holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
+//                    holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
                     // format the textview to show the easily readable format
                 }
 
@@ -102,15 +118,17 @@ class LaneListAdapter internal constructor(
         }
         return ContextCompat.getColor(context, R.color.app_lite_green)
     }
+
     fun getTimeLeft(lane: LaneSession): String? {
         if (lane.status == "IDLE") {
             return getTimeString(TimeUnit.MILLISECONDS.toMinutes(Util.getIdleTime(lane)))
         } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
-            val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(Util.getRemainingTimeInMilliseconds(lane))
+            val minutes: Long =
+                TimeUnit.MILLISECONDS.toMinutes(Util.getRemainingTimeInMilliseconds(lane))
             if (minutes < 0) {
                 return "0 min left"
             }
-            return String.format("%02d", minutes)+" mins left"
+            return String.format("%02d", minutes) + " mins left"
         } else if (lane.status == "TIMEOUT") {
             return getTimeString((getTimeoutTime(lane) / 60000).toLong())
         }
@@ -121,7 +139,7 @@ class LaneListAdapter internal constructor(
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         var laneNameView: AppCompatTextView = v.findViewById(R.id.laneNameView)
-         var laneTimeView: AppCompatTextView = v.findViewById(R.id.laneTime)
+        var laneTimeView: AppCompatTextView = v.findViewById(R.id.laneTimeView)
         var progressBar: ProgressBar = v.findViewById(R.id.progressBar)
         var timer: CountDownTimer? = null
         var increment: Int = 0
@@ -130,21 +148,53 @@ class LaneListAdapter internal constructor(
             try {
                 laneNameView.text = lane.laneName
                 laneTimeView.setTextColor(getColor(lane))
-                laneTimeView.text = getTimeLeft(lane = lane)
+//                laneTimeView.text = getTimeLeft(lane = lane)
                 if (lane.isOccupied) {
                     when (lane.status) {
                         "ACTIVE" -> {
                             laneNameView.setBackgroundResource(R.drawable.circle_occupied)
+                            progressBar.setProgressTintList(
+                                ColorStateList.valueOf(
+                                    ContextCompat.getColor(
+                                        context,
+                                        R.color.burnt_sienna
+                                    )
+                                )
+                            );
                         }
                         "TIMEOUT" -> {
                             laneNameView.setBackgroundResource(R.drawable.circle_completed)
+                            progressBar.setProgressTintList(
+                                ColorStateList.valueOf(
+                                    ContextCompat.getColor(
+                                        context,
+                                        R.color.app_lite_pink
+                                    )
+                                )
+                            );
                         }
                         else -> {
                             laneNameView.setBackgroundResource(R.drawable.circle_assigned)
+                            progressBar.setProgressTintList(
+                                ColorStateList.valueOf(
+                                    ContextCompat.getColor(
+                                        context,
+                                        R.color.app_lite_grey
+                                    )
+                                )
+                            );
                         }
                     }
                 } else {
                     laneNameView.setBackgroundResource(R.drawable.circle_available)
+                    progressBar.setProgressTintList(
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.app_lite_green
+                            )
+                        )
+                    );
                 }
                 laneNameView.setOnClickListener {
                     timer?.cancel()

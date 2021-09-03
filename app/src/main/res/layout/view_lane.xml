@@ -27,9 +27,9 @@
                 android:layout_gravity="center"
                 android:indeterminate="false"
                 android:max="100"
-                android:padding="3dp"
+                android:padding="0dp"
                 android:progress="100"
-                android:progressDrawable="@drawable/circle_progress" />
+                android:progressDrawable="@drawable/orange_circle_progress" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/laneNameView"
@@ -41,12 +41,12 @@
                 android:text="L1"
                 android:padding="10dp"
                 android:textColor="@color/white"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
         </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/laneTime"
+            android:id="@+id/laneTimeView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
