@@ -11,7 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
+import com.kos.tailwindbookingapp.Util.getTimeString
+import com.kos.tailwindbookingapp.Util.getTimeoutTime
 import com.kos.tailwindbookingapp.model.LaneSession
+import java.util.concurrent.TimeUnit
+
 
 class LaneListAdapter internal constructor(
     private val context: Context,
@@ -98,12 +102,26 @@ class LaneListAdapter internal constructor(
         }
         return ContextCompat.getColor(context, R.color.app_lite_green)
     }
+    fun getTimeLeft(lane: LaneSession): String? {
+        if (lane.status == "IDLE") {
+            return getTimeString(TimeUnit.MILLISECONDS.toMinutes(Util.getIdleTime(lane)))
+        } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
+            val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(Util.getRemainingTimeInMilliseconds(lane))
+            if (minutes < 0) {
+                return "0 min left"
+            }
+            return String.format("%02d", minutes)+" mins left"
+        } else if (lane.status == "TIMEOUT") {
+            return getTimeString((getTimeoutTime(lane) / 60000).toLong())
+        }
+        return ""
+    }
 
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         var laneNameView: AppCompatTextView = v.findViewById(R.id.laneNameView)
-        private var laneTimeView: AppCompatTextView = v.findViewById(R.id.laneTimeView)
+         var laneTimeView: AppCompatTextView = v.findViewById(R.id.laneTime)
         var progressBar: ProgressBar = v.findViewById(R.id.progressBar)
         var timer: CountDownTimer? = null
         var increment: Int = 0
@@ -112,6 +130,7 @@ class LaneListAdapter internal constructor(
             try {
                 laneNameView.text = lane.laneName
                 laneTimeView.setTextColor(getColor(lane))
+                laneTimeView.text = getTimeLeft(lane = lane)
                 if (lane.isOccupied) {
                     when (lane.status) {
                         "ACTIVE" -> {

@@ -47,7 +47,9 @@ object Util {
         Log.v("created time", "====" + createdTime + "====" + seconds)
         return createdTime + 60 * 60000
     }
-
+    fun getCurrentTime(): Long {
+        return System.currentTimeMillis()
+    }
     fun getCreatedTime(lane: LaneSession): Long {
         return getMilliSecondsFromDate(lane.createdOn.toString())
     }
@@ -68,6 +70,16 @@ object Util {
 
     fun getEndActiveTime(lane: LaneSession): Long {
         return (getStartedTime(lane) + lane.duration * 60000 + lane.pauseTime)
+    }
+    fun getTimeoutTime(lane: LaneSession?): Int {
+        return (getCurrentTime() - getTimeoutStartedTime(lane!!)).toInt()
+    }
+
+    fun getIdleTime(lane: LaneSession?): Long {
+        return getCurrentTime() - getCreatedTime(lane!!)
+    }
+    fun getRemainingTimeInMilliseconds(lane: LaneSession?): Long {
+        return (getEndActiveTime(lane!!) - getCurrentTime())
     }
 
     fun getTimeInMilliSeconds(lane: LaneSession): Double {
@@ -113,5 +125,8 @@ object Util {
         } else {
             return 0
         }
+    }
+    fun getTimeString(mins: Long): String? {
+        return if (mins <= 2) "Just now" else String.format("%03d", mins) +" mins in"
     }
 }
