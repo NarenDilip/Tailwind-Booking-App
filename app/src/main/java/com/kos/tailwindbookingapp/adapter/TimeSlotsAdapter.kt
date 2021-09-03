@@ -8,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListPopupWindow
 import android.widget.PopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
+import com.kos.tailwindbookingapp.dialog.ConfirmationDialog
+import com.kos.tailwindbookingapp.dialog.LaneTimeSlotExtendDialog
 
 class TimeSlotsAdapter internal constructor(
     private val context: Context,
@@ -34,8 +37,8 @@ class TimeSlotsAdapter internal constructor(
         try {
             val lane = timeSlots[holder.adapterPosition]
             holder.timeSlotRootView.setOnClickListener {
-                callback.viewTimeSlot(lane)
-                updateTimeView(holder.adapterPosition, holder, view)
+                callback.viewTimeSlot(lane, holder.adapterPosition)
+                updateTimeView(holder.adapterPosition)
                 showPopup(holder)
             }
 
@@ -56,7 +59,7 @@ class TimeSlotsAdapter internal constructor(
         }
     }
 
-    fun updateTimeView(position: Int, holder: ViewHolder, view: View) {
+    fun updateTimeView(position: Int) {
         rowIndex = position
         notifyDataSetChanged()
     }
@@ -68,6 +71,11 @@ class TimeSlotsAdapter internal constructor(
             view.findViewById<ConstraintLayout>(R.id.popupmessage),
             false
         )
+
+        val extendView = v.findViewById<TextView>(R.id.extendView)
+        extendView.setOnClickListener {
+            callback.laneTimeExtend()
+        }
 
         val p = Point()
         val location = IntArray(2)
@@ -115,6 +123,7 @@ class TimeSlotsAdapter internal constructor(
     }
 
     interface Callback {
-        fun viewTimeSlot(timeSlot: Int)
+        fun viewTimeSlot(timeSlot: Int, position: Int)
+        fun laneTimeExtend()
     }
 }

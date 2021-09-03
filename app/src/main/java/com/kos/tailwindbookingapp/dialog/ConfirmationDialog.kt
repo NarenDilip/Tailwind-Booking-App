@@ -7,17 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
-import com.kos.tailwindbookingapp.model.LaneSession
-import kotlinx.android.synthetic.main.dialog_login.closeView
-import kotlinx.android.synthetic.main.dialog_passcode.*
+import kotlinx.android.synthetic.main.dialog_confirmation_popup.*
+import kotlinx.android.synthetic.main.dialog_login.*
 
-class PassCodeDialog(val laneSession: LaneSession) : DialogFragment() {
+class ConfirmationDialog(val callBack: Callback, val titleContent:String):DialogFragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_passcode, container, false)
+        return inflater.inflate(R.layout.dialog_confirmation_popup, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,15 +29,18 @@ class PassCodeDialog(val laneSession: LaneSession) : DialogFragment() {
     }
 
     private fun setupClickListeners(view: View) {
-        closeView.setOnClickListener {
-            context?.let { it1 -> Util.hideKeyboard(closeView, it1) }
+        yesView.setOnClickListener {
             dismiss()
+            callBack.yes()
+        }
+        noView.setOnClickListener {
+            dismiss()
+            callBack.no()
         }
     }
 
     private fun setupView(view: View) {
-        lanePassCodeView.text = laneSession.passCode
-        laneNumberView.text = "Lane ${laneSession.laneId} Code"
+        confirmationLabelView.text = titleContent
     }
 
     override fun onStart() {
@@ -50,5 +53,8 @@ class PassCodeDialog(val laneSession: LaneSession) : DialogFragment() {
         )
     }
 
-
+    interface Callback {
+        fun yes()
+        fun no()
+    }
 }

@@ -13,13 +13,16 @@
     <string name="app_assigned">Assigned</string>
     <string name="app_lane">Lane 1</string>
     <string name="set_package">Set Package</string>
-    <string name="app_select_players">Selected Players</string>
+    <string name="app_select_players">Select Players</string>
     <string name="app_set_time">Set Time</string>
     <string name="app_lane_passcode">300</string>
     <string name="app_lane_text">Lane 1 Code</string>
     <string name="app_lane_summary">Ask the Customer to enter the code at K-OS Lane.</string>
     <string name="app_extend">Extend</string>
     <string name="app_extend_by">Extend by</string>
+    <string name="end_session">End Session</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
     <string name="app_player_empty">NO OF PLAYERS CANT BE EMPTY</string>
     <string name="app_time_empty">TIME SLOTS CANT BE EMPTY</string>
     <string name="update_package">Update Package</string>

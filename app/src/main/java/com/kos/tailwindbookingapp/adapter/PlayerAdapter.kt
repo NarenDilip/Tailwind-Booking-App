@@ -28,7 +28,7 @@ class PlayerAdapter internal constructor(
         try {
             val lane = players[holder.adapterPosition]
             holder.playerView.setOnClickListener {
-                callback.viewPlayer(lane)
+                callback.viewPlayer(lane, holder.adapterPosition)
                 updatePlayerView(holder.adapterPosition)
             }
             holder.renderView(lane)
@@ -66,7 +66,7 @@ class PlayerAdapter internal constructor(
     }
 
     interface Callback {
-        fun viewPlayer(playerCount: Int)
+        fun viewPlayer(playerCount: Int, position: Int)
     }
 
 
