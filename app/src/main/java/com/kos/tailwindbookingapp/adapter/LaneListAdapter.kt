@@ -2,7 +2,6 @@ package com.kos.tailwindbookingapp.adapter
 
 import android.content.Context
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
 import com.kos.tailwindbookingapp.model.LaneSession
-import java.util.concurrent.TimeUnit
-
 
 class LaneListAdapter internal constructor(
     private val context: Context,
@@ -28,6 +25,7 @@ class LaneListAdapter internal constructor(
             LayoutInflater.from(parent.context).inflate(R.layout.view_lane, parent, false)
         )
     }
+
     val laneListChangeObserver = androidx.lifecycle.Observer<List<LaneSession>> {
         try {
             laneList.clear()
@@ -37,6 +35,7 @@ class LaneListAdapter internal constructor(
             e.printStackTrace()
         }
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         try {
@@ -44,21 +43,26 @@ class LaneListAdapter internal constructor(
             holder.itemView.setOnClickListener {
                 callback.viewLane(lane)
             }
-            if(holder.timer != null){
+            if (holder.timer != null) {
                 holder.timer?.cancel()
             }
-            var ss = Util.getTimeInMilliSeconds(lane)
-            holder.timer = object : CountDownTimer(600000, 1000) {
+            var totalCalculatedtimeinMillis = Util.getTimeMilliSeconds(lane)
+
+            holder.timer = object : CountDownTimer(totalCalculatedtimeinMillis, 1000) {
                 // 500 means, onTick function will be called at every 500 milliseconds
                 override fun onTick(leftTimeInMilliseconds: Long) {
                     /* val seconds = leftTimeInMilliseconds / 1000
                      val barVal: Int = 100 - ((seconds / 60 * 100).toInt() + (seconds % 60).toInt())*/
                     // barTimer.setProgress
-                    val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(leftTimeInMilliseconds)
-                   // var ss = Util.getTimeInMilliSeconds(lane)
-                    var progress = (ss / 100).toInt()
-                  //  Log.v("seconds","==="+progress+"=="+ss)
-                    holder.progressBar.progress = seconds.toInt()
+                    val seconds: Long = leftTimeInMilliseconds
+                    val max_seconds: Long = 100
+                    // var ss = Util.getTimeInMilliSeconds(lane)
+                    var progress = (totalCalculatedtimeinMillis / 100).toInt()
+
+                    var totalCalculatedtimeinPercentage = Util.getTimeInMilliSeconds(lane)
+//                    holder.progressBar.max = 100
+//                    Log.v("seconds","==="+progress+"=="+ss)
+                    holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
                     // format the textview to show the easily readable format
                 }
 
@@ -78,25 +82,24 @@ class LaneListAdapter internal constructor(
 
     fun getColor(lane: LaneSession): Int {
         if (lane.status == "IDLE") {
-            return ContextCompat.getColor(context,R.color.app_lite_grey)
+            return ContextCompat.getColor(context, R.color.app_lite_grey)
         } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
-            return ContextCompat.getColor(context,R.color.burnt_sienna)
+            return ContextCompat.getColor(context, R.color.burnt_sienna)
         } else if (lane.status == "TIMEOUT") {
-            return ContextCompat.getColor(context,R.color.pink)
+            return ContextCompat.getColor(context, R.color.pink)
         }
-        return ContextCompat.getColor(context,R.color.app_lite_green)
+        return ContextCompat.getColor(context, R.color.app_lite_green)
     }
-
 
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         var laneNameView: AppCompatTextView = v.findViewById(R.id.laneNameView)
         private var laneTimeView: AppCompatTextView = v.findViewById(R.id.laneTimeView)
-         var progressBar:ProgressBar = v.findViewById(R.id.progressBar)
-        var timer:CountDownTimer?=null
-        var increment:Int= 0
-        var bool= false
+        var progressBar: ProgressBar = v.findViewById(R.id.progressBar)
+        var timer: CountDownTimer? = null
+        var increment: Int = 0
+        var bool = false
         fun renderView(lane: LaneSession) {
             try {
                 laneNameView.text = lane.laneName
@@ -118,7 +121,7 @@ class LaneListAdapter internal constructor(
                 }
                 laneNameView.setOnClickListener {
                     timer?.cancel()
-                    if(bool){
+                    if (bool) {
                         timer?.start()
                         notifyDataSetChanged()
                     }

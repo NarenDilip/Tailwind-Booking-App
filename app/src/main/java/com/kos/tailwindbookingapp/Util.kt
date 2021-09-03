@@ -27,15 +27,27 @@ object Util {
         }
         return percentage;
     }
-    fun getActiveProgress(endTime: Int, startTime: Int): Double {
+
+    fun getProgressinMilli(endTime: Long, startTime: Long): Long {
+        val total: Long = (System.currentTimeMillis() - endTime) * 100 / (endTime - startTime)
+//        val percentage: Double = (100 - total).toDouble()
+//        if (percentage > 90) {
+//            return 90.0;
+//        }
+        return total;
+    }
+
+
+    fun getActiveProgress(endTime: Long, startTime: Int): Double {
         return (System.currentTimeMillis() - endTime) * 100 / (startTime - endTime).toDouble()
     }
+
     fun getEndTime(createdTime: Long): Long {
         val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(createdTime)
-        Log.v("created time","===="+createdTime+"===="+seconds)
-
+        Log.v("created time", "====" + createdTime + "====" + seconds)
         return createdTime + 60 * 60000
     }
+
     fun getCreatedTime(lane: LaneSession): Long {
         return getMilliSecondsFromDate(lane.createdOn.toString())
     }
@@ -43,28 +55,63 @@ object Util {
     fun getStartedTime(lane: LaneSession): Long {
         return getMilliSecondsFromDate(lane.startedOn.toString())
     }
+
     fun getMilliSecondsFromDate(utcTime: String?): Long {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
         val date1 = dateFormat.parse(utcTime)
-        return  date1.time
+        return date1.time
     }
+
     fun getTimeoutStartedTime(lane: LaneSession): Long {
         return getStartedTime(lane) + lane.duration * 60000
     }
-    fun getEndActiveTime(lane: LaneSession): Int {
-        return (getStartedTime(lane) + lane.duration * 60000 + lane.pauseTime).toInt()
+
+    fun getEndActiveTime(lane: LaneSession): Long {
+        return (getStartedTime(lane) + lane.duration * 60000 + lane.pauseTime)
     }
+
     fun getTimeInMilliSeconds(lane: LaneSession): Double {
-         if (lane.status == "IDLE") {
-             return getProgress(getEndTime(getCreatedTime(lane)), getCreatedTime(lane))
+        if (lane.status == "IDLE") {
+            return getProgress(getEndTime(getCreatedTime(lane)), getCreatedTime(lane))
         } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
-             return getActiveProgress(getEndActiveTime(lane), getStartedTime(lane).toInt())
+            return getActiveProgress(getEndActiveTime(lane), getStartedTime(lane).toInt())
         } else if (lane.status == "TIMEOUT") {
-             return  getProgress(
+            return getProgress(
                 getEndTime(getTimeoutStartedTime(lane)), getTimeoutStartedTime(lane)
             )
         } else {
-             return 0.0
+            return 0.0
+        }
+    }
+
+    fun getTimeMilliSeconds(lane: LaneSession): Long {
+        if (lane.status == "IDLE") {
+            var calculatedOutput = 0
+            //First Step
+            val createdTime = getCreatedTime(lane)
+            //Secons Step
+            val addOnTime = getEndTime(getCreatedTime(lane))
+            //Third Step
+            val curretTime = System.currentTimeMillis()
+            //Fourth Step
+            if (addOnTime > curretTime) {
+                calculatedOutput = (addOnTime - curretTime).toInt()
+            } else {
+                calculatedOutput = 0
+            }
+            return calculatedOutput.toLong();
+
+
+//            return getProgressinMilli(getEndTime(getCreatedTime(lane)), getCreatedTime(lane))
+        } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
+            return getActiveProgress(getEndActiveTime(lane), getStartedTime(lane).toInt()).toLong()
+        } else if (lane.status == "TIMEOUT") {
+            return getProgressinMilli(
+                getEndTime(getTimeoutStartedTime(lane)),
+                getTimeoutStartedTime(lane)
+            )
+        } else {
+            return 0
         }
     }
 }
