@@ -60,6 +60,14 @@ class LaneListAdapter internal constructor(
                     var progress = (totalCalculatedtimeinMillis / 100).toInt()
 
                     var totalCalculatedtimeinPercentage = Util.getTimeInMilliSeconds(lane)
+//                    val roundOff = String.format("%.0f", totalCalculatedtimeinPercentage)
+//
+//                    var Callc = totalCalculatedtimeinPercentage.toString()
+//                    if (Callc.contains("E-")) {
+//                        var ups = Callc.replace("E-", "")
+//                        var dsds = Callc.toInt()
+//                    }
+
 //                    holder.progressBar.max = 100
 //                    Log.v("seconds","==="+progress+"=="+ss)
                     holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
