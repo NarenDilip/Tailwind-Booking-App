@@ -63,7 +63,6 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         endSessionView.setOnClickListener {
             try{
                 laneSession.status = "END"
-                laneSession.extraTime = 0
                 updateLaneSession(laneSession)
             }catch (e:Exception){
                 e.printStackTrace()
