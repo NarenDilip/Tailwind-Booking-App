@@ -24,7 +24,7 @@ class LaneListAdapter internal constructor(
 ) :
     RecyclerView.Adapter<LaneListAdapter.ViewHolder>() {
     private var laneList: ArrayList<LaneSession> = ArrayList()
-
+    var bool = false
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.view_lane, parent, false)
@@ -47,6 +47,12 @@ class LaneListAdapter internal constructor(
             val lane = laneList[holder.adapterPosition]
             holder.itemView.setOnClickListener {
                 callback.viewLane(lane)
+                holder.timer?.cancel()
+                if (bool) {
+                    holder.timer?.start()
+                    notifyDataSetChanged()
+                }
+                bool = true
             }
             if (holder.timer != null) {
                 holder.timer?.cancel()
@@ -54,15 +60,7 @@ class LaneListAdapter internal constructor(
             var totalCalculatedtimeinMillis = Util.getTimeMilliSeconds(lane)
 
             holder.timer = object : CountDownTimer(totalCalculatedtimeinMillis, 1000) {
-                // 500 means, onTick function will be called at every 500 milliseconds
                 override fun onTick(leftTimeInMilliseconds: Long) {
-                    /* val seconds = leftTimeInMilliseconds / 1000
-                     val barVal: Int = 100 - ((seconds / 60 * 100).toInt() + (seconds % 60).toInt())*/
-                    // barTimer.setProgress
-                    val seconds: Long = leftTimeInMilliseconds
-                    val max_seconds: Long = 100
-                    // var ss = Util.getTimeInMilliSeconds(lane)
-                    var progress = (totalCalculatedtimeinMillis / 100).toInt()
 
                     var totalCalculatedtimeinPercentage = Util.getTimeInMilliSeconds(lane)
                     holder.laneTimeView.text = getTimeLeft(lane = lane)
@@ -86,12 +84,6 @@ class LaneListAdapter internal constructor(
                     } else {
                         holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
                     }
-
-
-//                    holder.progressBar.max = 100
-//                    Log.v("seconds","==="+progress+"=="+ss)
-//                    holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
-                    // format the textview to show the easily readable format
                 }
 
                 override fun onFinish() {
@@ -142,8 +134,6 @@ class LaneListAdapter internal constructor(
         var laneTimeView: AppCompatTextView = v.findViewById(R.id.laneTimeView)
         var progressBar: ProgressBar = v.findViewById(R.id.progressBar)
         var timer: CountDownTimer? = null
-        var increment: Int = 0
-        var bool = false
         fun renderView(lane: LaneSession) {
             try {
                 laneNameView.text = lane.laneName
@@ -195,15 +185,6 @@ class LaneListAdapter internal constructor(
                             )
                         )
                     );
-                }
-                laneNameView.setOnClickListener {
-                    timer?.cancel()
-                    if (bool) {
-                        timer?.start()
-                        notifyDataSetChanged()
-                    }
-                    bool = true
-
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

@@ -80,16 +80,16 @@ object Util {
     }
 
     fun getTimeInMilliSeconds(lane: LaneSession): Double {
-        if (lane.status == "IDLE") {
-            return getProgress(getEndTime(getCreatedTime(lane)), getCreatedTime(lane))
+        return if (lane.status == "IDLE") {
+            getProgress(getEndTime(getCreatedTime(lane)), getCreatedTime(lane))
         } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
-            return getActiveProgress(getEndActiveTime(lane), getStartedTime(lane).toInt())
+            getActiveProgress(getEndActiveTime(lane), getStartedTime(lane).toInt())
         } else if (lane.status == "TIMEOUT") {
-            return getProgress(
+            getProgress(
                 getEndTime(getTimeoutStartedTime(lane)), getTimeoutStartedTime(lane)
             )
         } else {
-            return 0.0
+            0.0
         }
     }
 
