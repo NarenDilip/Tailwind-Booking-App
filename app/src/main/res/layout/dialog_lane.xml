@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/header_title"
+            android:id="@+id/laneLabelView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -83,7 +83,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginRight="30dp"
             android:background="@color/app_line_color"
-            app:layout_constraintTop_toBottomOf="@+id/header_title" />
+            app:layout_constraintTop_toBottomOf="@+id/laneLabelView" />
 
         <TextView
             android:id="@+id/header_players"

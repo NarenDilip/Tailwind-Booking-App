@@ -44,7 +44,6 @@ object Util {
 
     fun getEndTime(createdTime: Long): Long {
         val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(createdTime)
-        Log.v("created time", "====" + createdTime + "====" + seconds)
         return createdTime + 60 * 60000
     }
     fun getCurrentTime(): Long {
@@ -145,13 +144,8 @@ object Util {
             } else {
                 calculatedOutput = 0
             }
-            return calculatedOutput.toLong();
+            return calculatedOutput.toLong()
 
-
-//            return getProgressinMilli(
-//                getEndTime(getTimeoutStartedTime(lane)),
-//                getTimeoutStartedTime(lane)
-//            )
         } else {
             return 0
         }

@@ -3,6 +3,7 @@ package com.kos.tailwindbookingapp.adapter
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,49 +48,52 @@ class LaneListAdapter internal constructor(
             val lane = laneList[holder.adapterPosition]
             holder.itemView.setOnClickListener {
                 callback.viewLane(lane)
-                holder.timer?.cancel()
-                if (bool) {
-                    holder.timer?.start()
-                    notifyDataSetChanged()
+                if(lane.isOccupied){
+                    holder.timer?.cancel()
+                    if (bool) {
+                        holder.timer?.start()
+                        notifyDataSetChanged()
+                    }
+                    bool = true
                 }
-                bool = true
+
             }
-            if (holder.timer != null) {
-                holder.timer?.cancel()
-            }
-            var totalCalculatedtimeinMillis = Util.getTimeMilliSeconds(lane)
+            if(lane.isOccupied){
+                if (holder.timer != null) {
+                    holder.timer?.cancel()
+                }
+                val totalCalculatedtimeinMillis = Util.getTimeMilliSeconds(lane)
+                Log.d("Time1", lane.laneId.toString())
+                holder.timer = object : CountDownTimer(totalCalculatedtimeinMillis, 1000) {
+                    override fun onTick(leftTimeInMilliseconds: Long) {
+                        Log.d("Time2", lane.laneId.toString())
+                        var totalCalculatedtimeinPercentage = Util.getTimeInMilliSeconds(lane)
+                        holder.laneTimeView.text = getTimeLeft(lane = lane)
+                        if (lane.status == "ACTIVE") {
+                            var Callc = totalCalculatedtimeinPercentage.toString()
+                            if (Callc.contains("E-")) {
+                                val ups = Callc.replace("E-", "")
 
-            holder.timer = object : CountDownTimer(totalCalculatedtimeinMillis, 1000) {
-                override fun onTick(leftTimeInMilliseconds: Long) {
+                                try {
+                                    val parsedInt = ups.toDouble()
+                                    val parsedI = parsedInt.toInt() + 1
+                                    holder.progressBar.progress = 100 - parsedI
+                                } catch (nfe: NumberFormatException) {
+                                }
 
-                    var totalCalculatedtimeinPercentage = Util.getTimeInMilliSeconds(lane)
-                    holder.laneTimeView.text = getTimeLeft(lane = lane)
-                    if (lane.status == "ACTIVE") {
-                        var Callc = totalCalculatedtimeinPercentage.toString()
-                        if (Callc.contains("E-")) {
-                            var ups = Callc.replace("E-", "")
-
-                            try {
-                                val parsedInt = ups.toDouble()
-                                val parsedI = parsedInt.toInt() + 1
-                                holder.progressBar.progress = parsedI
-                                println("The parsed int is $parsedInt")
-                            } catch (nfe: NumberFormatException) {
-                                // not a valid int
+                            } else {
+                                holder.progressBar.progress =
+                                    100 - totalCalculatedtimeinPercentage.toInt()
                             }
-
                         } else {
                             holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
                         }
-                    } else {
-                        holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
                     }
-                }
+                    override fun onFinish() {
 
-                override fun onFinish() {
-
-                }
-            }.start()
+                    }
+                }.start()
+            }
             holder.renderView(lane)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -138,8 +142,9 @@ class LaneListAdapter internal constructor(
             try {
                 laneNameView.text = lane.laneName
                 laneTimeView.setTextColor(getColor(lane))
-//                laneTimeView.text = getTimeLeft(lane = lane)
-                if (lane.isOccupied) {
+                if(lane.isOccupied){
+                    progressBar.visibility = View.VISIBLE
+                    laneTimeView.visibility = View.VISIBLE
                     when (lane.status) {
                         "ACTIVE" -> {
                             laneNameView.setBackgroundResource(R.drawable.circle_occupied)
@@ -175,17 +180,13 @@ class LaneListAdapter internal constructor(
                             );
                         }
                     }
-                } else {
+
+                }else{
+                    progressBar.visibility = View.GONE
+                    laneTimeView.visibility = View.GONE
                     laneNameView.setBackgroundResource(R.drawable.circle_available)
-                    progressBar.setProgressTintList(
-                        ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.app_lite_green
-                            )
-                        )
-                    );
                 }
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }

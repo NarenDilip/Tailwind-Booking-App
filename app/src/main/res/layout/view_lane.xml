@@ -22,24 +22,23 @@
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_gravity="center"
                 android:indeterminate="false"
                 android:max="100"
                 android:padding="0dp"
-                android:progress="100"
                 android:progressDrawable="@drawable/orange_circle_progress" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/laneNameView"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:background="@drawable/circle_assigned"
                 android:gravity="center"
                 android:text="L1"
-                android:padding="10dp"
+                android:padding="20dp"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -52,9 +51,9 @@
             android:layout_gravity="center"
             android:layout_marginTop="2dp"
             android:fontFamily="@font/sfprodisplayregular"
-            android:text="45 mins left"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/laneNameView">
 
