@@ -43,12 +43,14 @@ object Util {
     }
 
     fun getEndTime(createdTime: Long): Long {
-        val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(createdTime)
+//        val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(createdTime)
         return createdTime + 60 * 60000
     }
+
     fun getCurrentTime(): Long {
         return System.currentTimeMillis()
     }
+
     fun getCreatedTime(lane: LaneSession): Long {
         return getMilliSecondsFromDate(lane.createdOn.toString())
     }
@@ -70,6 +72,7 @@ object Util {
     fun getEndActiveTime(lane: LaneSession): Long {
         return (getStartedTime(lane) + lane.duration * 60000 + lane.pauseTime)
     }
+
     fun getTimeoutTime(lane: LaneSession?): Int {
         return (getCurrentTime() - getTimeoutStartedTime(lane!!)).toInt()
     }
@@ -92,65 +95,43 @@ object Util {
         }
     }
 
-
-
     fun getRemainingTimeInMilliseconds(lane: LaneSession?): Long {
         return getEndActiveTime(lane!!) - System.currentTimeMillis()
     }
 
     fun getTimeMilliSeconds(lane: LaneSession): Long {
         if (lane.status == "IDLE") {
-            var calculatedOutput = 0
-            //First Step
-            val createdTime = getCreatedTime(lane)
-            //Secons Step
             val addOnTime = getEndTime(getCreatedTime(lane))
-            //Third Step
             val curretTime = System.currentTimeMillis()
-            //Fourth Step
-            if (addOnTime > curretTime) {
-                calculatedOutput = (addOnTime - curretTime).toInt()
-            } else {
-                calculatedOutput = 0
-            }
-            return calculatedOutput.toLong();
-//            return getProgressinMilli(getEndTime(getCreatedTime(lane)), getCreatedTime(lane))
+            val calculatedTime = timeDifferenceCalc(addOnTime, curretTime)
+            return calculatedTime;
         } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
-
-            var calculatedOutput = 0
-            //First Step
             val endTime = getEndActiveTime(lane)
-            var startTime = getStartedTime(lane)
             val curretTime = System.currentTimeMillis()
-            if (endTime > curretTime) {
-                calculatedOutput = (endTime - curretTime).toInt()
-            } else {
-                calculatedOutput = 0
-            }
-            return calculatedOutput.toLong()
-//            return getActiveProgress(getEndActiveTime(lane), getStartedTime(lane).toInt()).toLong()
-
+            val calculatedTime = timeDifferenceCalc(endTime, curretTime)
+           return calculatedTime
         } else if (lane.status == "TIMEOUT") {
-            var calculatedOutput = 0
-            //First Step
             val createdTime = getTimeoutStartedTime(lane)
-            //Secons Step
             val addOnTime = getEndTime(createdTime)
-            //Third Step
             val curretTime = System.currentTimeMillis()
-            //Fourth Step
-            if (addOnTime < curretTime) {
-                calculatedOutput = (curretTime - addOnTime).toInt()
-            } else {
-                calculatedOutput = 0
-            }
-            return calculatedOutput.toLong()
-
+            val calculatedTime = timeDifferenceCalc(addOnTime, curretTime)
+            return calculatedTime
         } else {
             return 0
         }
     }
+
+    private fun timeDifferenceCalc(addOnTime: Long, curretTime: Long): Long {
+        var calculatedOutput = 0
+        if (addOnTime > curretTime) {
+            calculatedOutput = (addOnTime - curretTime).toInt()
+        } else {
+            calculatedOutput = (curretTime - addOnTime).toInt()
+        }
+        return calculatedOutput.toLong();
+    }
+
     fun getTimeString(mins: Long): String? {
-        return if (mins <= 2) "Just now" else String.format("%03d", mins) +" mins in"
+        return if (mins <= 2) "Just now" else String.format("%02d", mins) + " mins in"
     }
 }
