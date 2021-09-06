@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
 import com.kos.tailwindbookingapp.model.LaneSession
-import kotlinx.android.synthetic.main.dialog_lane.view.*
+
 
 
 class TimeSlotsAdapter internal constructor(
@@ -42,27 +42,24 @@ class TimeSlotsAdapter internal constructor(
         )
 
         mPopupwindow = PopupWindow(v, 300, 150, true)
-        mPopupwindow = PopupWindow(
-            v,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
+        mPopupwindow = PopupWindow(v, ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-
         val remainingTimeView = v.findViewById<TextView>(R.id.remainingTimeView)
         remainingTimeView.text = getRemainingTime(laneSession = laneSession)
-
         val extendView = v.findViewById<TextView>(R.id.extendView)
         extendView.setOnClickListener {
             mPopupwindow!!.dismiss()
             callback.laneTimeExtend()
         }
-
         try {
             val lane = timeSlots[holder.adapterPosition]
             holder.timeSlotRootView.setOnClickListener {
                 callback.viewTimeSlot(lane, holder.adapterPosition)
                 updateTimeView(holder.adapterPosition)
-                showPopup(holder, mPopupwindow!!, v)
+                if(laneSession.isOccupied){
+                    showPopup(holder, mPopupwindow!!, v)
+                }
             }
             holder.renderView(lane)
             if (rowIndex == holder.adapterPosition) {
@@ -70,23 +67,14 @@ class TimeSlotsAdapter internal constructor(
                 holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.black))
                 holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.black))
             } else {
-                if (laneSession.startedOn != null && validateTimeSlot(
-                        laneSession, position,
-                        timeSlots
-                    )
-                ) {
+                if (laneSession.startedOn != null && validateTimeSlot(laneSession, position,
+                        timeSlots)) {
                     holder.timeSlotRootView.isEnabled = false
                     holder.timeSlotView.setTextColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.app_lite_grey
-                        )
+                        ContextCompat.getColor(context, R.color.app_lite_grey)
                     )
                     holder.minLabelView.setTextColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.app_lite_grey
-                        )
+                        ContextCompat.getColor(context, R.color.app_lite_grey)
                     )
                 } else {
                     holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_black)
@@ -114,8 +102,10 @@ class TimeSlotsAdapter internal constructor(
                 return "$min mins left";
             }
             return "Yet to start";
-        } else {
+        } else if (laneSession.status == "TIMEOUT"){
             return "Time Elapsed";
+        }else{
+            return "";
         }
     }
 

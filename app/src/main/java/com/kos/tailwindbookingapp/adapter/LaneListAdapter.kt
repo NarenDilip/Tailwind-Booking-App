@@ -3,7 +3,6 @@ package com.kos.tailwindbookingapp.adapter
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
 import com.kos.tailwindbookingapp.Util.getTimeString
 import com.kos.tailwindbookingapp.Util.getTimeoutTime
+import com.kos.tailwindbookingapp.db.AppDatabase
 import com.kos.tailwindbookingapp.model.LaneSession
 import java.util.concurrent.TimeUnit
 
@@ -48,39 +48,27 @@ class LaneListAdapter internal constructor(
             val lane = laneList[holder.adapterPosition]
             holder.itemView.setOnClickListener {
                 callback.viewLane(lane)
-                if(lane.isOccupied){
-                    holder.timer?.cancel()
-                    if (bool) {
-                        holder.timer?.start()
-                        notifyDataSetChanged()
-                    }
-                    bool = true
-                }
-
             }
             if(lane.isOccupied){
                 if (holder.timer != null) {
                     holder.timer?.cancel()
                 }
                 val totalCalculatedtimeinMillis = Util.getTimeMilliSeconds(lane)
-                Log.d("Time1", lane.laneId.toString())
                 holder.timer = object : CountDownTimer(totalCalculatedtimeinMillis, 1000) {
                     override fun onTick(leftTimeInMilliseconds: Long) {
-                        Log.d("Time2", lane.laneId.toString())
-                        var totalCalculatedtimeinPercentage = Util.getTimeInMilliSeconds(lane)
+                        val totalCalculatedtimeinPercentage = Util.getTimeInMilliSeconds(lane)
                         holder.laneTimeView.text = getTimeLeft(lane = lane)
                         if (lane.status == "ACTIVE") {
-                            var Callc = totalCalculatedtimeinPercentage.toString()
+                            val Callc = totalCalculatedtimeinPercentage.toString()
                             if (Callc.contains("E-")) {
                                 val ups = Callc.replace("E-", "")
-
                                 try {
                                     val parsedInt = ups.toDouble()
                                     val parsedI = parsedInt.toInt() + 1
                                     holder.progressBar.progress = 100 - parsedI
                                 } catch (nfe: NumberFormatException) {
+                                    nfe.printStackTrace()
                                 }
-
                             } else {
                                 holder.progressBar.progress =
                                     100 - totalCalculatedtimeinPercentage.toInt()
@@ -90,7 +78,10 @@ class LaneListAdapter internal constructor(
                         }
                     }
                     override fun onFinish() {
-
+                        if(lane.status == "ACTIVE"){
+                            lane.status = "TIMEOUT"
+                            AppDatabase.getAppDatabase(context).databaseDao().insertLaneSession(lane)
+                        }
                     }
                 }.start()
             }
@@ -133,7 +124,6 @@ class LaneListAdapter internal constructor(
 
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-
         var laneNameView: AppCompatTextView = v.findViewById(R.id.laneNameView)
         var laneTimeView: AppCompatTextView = v.findViewById(R.id.laneTimeView)
         var progressBar: ProgressBar = v.findViewById(R.id.progressBar)
@@ -148,36 +138,30 @@ class LaneListAdapter internal constructor(
                     when (lane.status) {
                         "ACTIVE" -> {
                             laneNameView.setBackgroundResource(R.drawable.circle_occupied)
-                            progressBar.setProgressTintList(
-                                ColorStateList.valueOf(
-                                    ContextCompat.getColor(
-                                        context,
-                                        R.color.burnt_sienna
-                                    )
+                            progressBar.progressTintList = ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.burnt_sienna
                                 )
-                            );
+                            )
                         }
                         "TIMEOUT" -> {
                             laneNameView.setBackgroundResource(R.drawable.circle_completed)
-                            progressBar.setProgressTintList(
-                                ColorStateList.valueOf(
-                                    ContextCompat.getColor(
-                                        context,
-                                        R.color.app_lite_pink
-                                    )
+                            progressBar.progressTintList = ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.app_lite_pink
                                 )
-                            );
+                            )
                         }
                         else -> {
                             laneNameView.setBackgroundResource(R.drawable.circle_assigned)
-                            progressBar.setProgressTintList(
-                                ColorStateList.valueOf(
-                                    ContextCompat.getColor(
-                                        context,
-                                        R.color.app_lite_grey
-                                    )
+                            progressBar.progressTintList = ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.app_lite_grey
                                 )
-                            );
+                            )
                         }
                     }
 

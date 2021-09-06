@@ -38,7 +38,7 @@ object Util {
     }
 
 
-    fun getActiveProgress(endTime: Long, startTime: Int): Double {
+    fun getActiveProgress(endTime: Long, startTime: Long): Double {
         return (System.currentTimeMillis() - endTime) * 100 / (startTime - endTime).toDouble()
     }
 
@@ -85,7 +85,7 @@ object Util {
         return if (lane.status == "IDLE") {
             getProgress(getEndTime(getCreatedTime(lane)), getCreatedTime(lane))
         } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
-            getActiveProgress(getEndActiveTime(lane), getStartedTime(lane).toInt())
+            getActiveProgress(getEndActiveTime(lane), getStartedTime(lane))
         } else if (lane.status == "TIMEOUT") {
             getProgress(
                 getEndTime(getTimeoutStartedTime(lane)), getTimeoutStartedTime(lane)

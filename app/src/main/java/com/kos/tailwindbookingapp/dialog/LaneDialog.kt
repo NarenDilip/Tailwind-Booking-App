@@ -170,13 +170,11 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
             return
         }
         timer_empty.visibility = View.GONE
-
         val isSameTimeSlot = defaultTimeSlots[timeSlotPosition] == laneSession.duration
         val isSamePlayerSlot = players[playerPosition] == laneSession.noOfPlayers
-
         if (timeSlotPosition != -1 && !isSameTimeSlot) {
             val timeDuration = laneSession.duration
-            val extraTime = defaultTimeSlots[timeSlotPosition] - timeDuration;
+            val extraTime = defaultTimeSlots[timeSlotPosition] - timeDuration
             laneSession.extraTime = extraTime
         } else {
             laneSession.extraTime = 0
@@ -184,7 +182,6 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         if (playerPosition != -1 && !isSamePlayerSlot) {
             laneSession.noOfPlayers = players[playerPosition]
         }
-
         if(laneSession.status == "TIMEOUT"){
             laneSession.status = "ACTIVE"
             updateLaneSession(laneSession)
@@ -193,7 +190,6 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         }else{
             postLaneSessionRequest()
         }
-
     }
     private fun postLaneSessionRequest(){
         val jsonObject = JsonObject()
@@ -201,7 +197,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         jsonObject.addProperty("created_by", AppPreference[requireContext(), "login_user", ""])
         jsonObject.addProperty("duration", laneSession.duration)
         jsonObject.addProperty("extra_time", 0)
-        jsonObject.addProperty("no_of_players",laneSession.noOfPlayers)
+        jsonObject.addProperty("no_of_players", laneSession.noOfPlayers)
         print("Update Lane session - $jsonObject");
         laneSessionViewModel?.updateLaneSession(jsonObject, laneSession.laneId.toString())
     }

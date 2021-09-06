@@ -17,10 +17,8 @@ interface DatabaseDao {
     @Query("select * from laneSession")
     fun listenLanes(): LiveData<List<LaneSession>>
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLaneSession(laneSession: LaneSession)
-
 
     @Query("UPDATE laneSession SET status =:status where id = :laneSessionId ")
     fun updateLaneSession(status: String?, laneSessionId: String): Int
