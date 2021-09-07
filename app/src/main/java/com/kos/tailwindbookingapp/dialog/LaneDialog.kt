@@ -139,8 +139,8 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
             if(defaultTimeSlots.indexOf(laneSession.duration) == -1){
                 updateExtendedTime(laneSession.duration)
             }
+            timeSlotPosition = defaultTimeSlots.indexOf(laneSession.duration)
         }
-
     }
 
 
