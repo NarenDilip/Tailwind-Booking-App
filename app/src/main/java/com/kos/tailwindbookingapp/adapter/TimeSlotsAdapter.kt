@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kos.tailwindbookingapp.R
 import com.kos.tailwindbookingapp.Util
 import com.kos.tailwindbookingapp.model.LaneSession
-
+import java.util.concurrent.TimeUnit
 
 
 class TimeSlotsAdapter internal constructor(
@@ -42,7 +42,8 @@ class TimeSlotsAdapter internal constructor(
         )
 
         mPopupwindow = PopupWindow(v, 300, 150, true)
-        mPopupwindow = PopupWindow(v, ViewGroup.LayoutParams.WRAP_CONTENT,
+        mPopupwindow = PopupWindow(
+            v, ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         val remainingTimeView = v.findViewById<TextView>(R.id.remainingTimeView)
@@ -54,21 +55,14 @@ class TimeSlotsAdapter internal constructor(
         }
         try {
             val lane = timeSlots[holder.adapterPosition]
-            holder.timeSlotRootView.setOnClickListener {
-                callback.viewTimeSlot(lane, holder.adapterPosition)
-                updateTimeView(holder.adapterPosition)
-                if(laneSession.isOccupied){
-                    showPopup(holder, mPopupwindow!!, v)
-                }
-            }
             holder.renderView(lane)
             if (rowIndex == holder.adapterPosition) {
                 holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_yellow)
                 holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.black))
                 holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.black))
             } else {
-                if (laneSession.startedOn != null && validateTimeSlot(laneSession, position,
-                        timeSlots)) {
+                holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_black)
+                if (validateTimeSlot(lane = laneSession, index = holder.adapterPosition)) {
                     holder.timeSlotRootView.isEnabled = false
                     holder.timeSlotView.setTextColor(
                         ContextCompat.getColor(context, R.color.app_lite_grey)
@@ -77,10 +71,14 @@ class TimeSlotsAdapter internal constructor(
                         ContextCompat.getColor(context, R.color.app_lite_grey)
                     )
                 } else {
-                    holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_black)
                     holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.white))
                     holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.white))
                 }
+            }
+            holder.timeSlotRootView.setOnClickListener {
+                callback.viewTimeSlot(lane, holder.adapterPosition)
+                showPopup(holder, mPopupwindow!!)
+                updateTimeView(holder.adapterPosition)
             }
 
         } catch (e: Exception) {
@@ -90,7 +88,6 @@ class TimeSlotsAdapter internal constructor(
 
     fun updateTimeView(position: Int, holder: ViewHolder? = null) {
         rowIndex = position
-        //showPopup(view)
         notifyDataSetChanged()
     }
 
@@ -102,32 +99,28 @@ class TimeSlotsAdapter internal constructor(
                 return "$min mins left";
             }
             return "Yet to start";
-        } else if (laneSession.status == "TIMEOUT"){
+        } else if (laneSession.status == "TIMEOUT") {
             return "Time Elapsed";
-        }else{
+        } else {
             return "";
         }
     }
 
-    private fun validateTimeSlot(
-        lane: LaneSession,
-        index: Int,
-        timeSlots: ArrayList<Int>
-    ): Boolean {
-        return if (lane.status == "ACTIVE" || lane.status == "TIMEOUT") {
+    private fun validateTimeSlot(lane: LaneSession, index: Int):
+            Boolean {
+        if (lane.status == "ACTIVE" || lane.status == "TIMEOUT") {
             if (lane.status == "ACTIVE") {
-                val min =
-                    (Util.getRemainingTimeInMilliseconds(laneSession) / 1000) / 60
-                lane.duration - min > timeSlots[index]
+                val minutes: Long =
+                    TimeUnit.MILLISECONDS.toMinutes(Util.getRemainingTimeInMilliseconds(lane))
+                return lane.duration - minutes > timeSlots[index]
             } else {
-                lane.duration > timeSlots[index]
+                return lane.duration > timeSlots[index]
             }
-        } else {
-            false
         }
+        return false
     }
 
-    private fun showPopup(holder: ViewHolder, mPopupwindow: PopupWindow, v: View) {
+    private fun showPopup(holder: ViewHolder, mPopupwindow: PopupWindow) {
 
         val p = Point()
         val location = IntArray(2)
@@ -169,7 +162,7 @@ class TimeSlotsAdapter internal constructor(
     }
 
     interface Callback {
-        fun viewTimeSlot(timeSlot: Int, position: Int)
+        fun viewTimeSlot(timeSlotSelection: Int, position: Int)
         fun laneTimeExtend()
     }
 }

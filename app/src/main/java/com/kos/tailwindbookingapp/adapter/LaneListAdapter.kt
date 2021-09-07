@@ -53,29 +53,12 @@ class LaneListAdapter internal constructor(
                 if (holder.timer != null) {
                     holder.timer?.cancel()
                 }
-                val totalCalculatedtimeinMillis = Util.getTimeMilliSeconds(lane)
-                holder.timer = object : CountDownTimer(totalCalculatedtimeinMillis, 1000) {
+                val totalCalculatedTimeInMillis = Util.getTimeMilliSeconds(lane)
+                holder.timer = object : CountDownTimer(totalCalculatedTimeInMillis, 1000) {
                     override fun onTick(leftTimeInMilliseconds: Long) {
-                        val totalCalculatedtimeinPercentage = Util.getTimeInMilliSeconds(lane)
+                        val calculatedTimeInPercentage = Util.getTimeInMilliSeconds(lane)
                         holder.laneTimeView.text = getTimeLeft(lane = lane)
-                        if (lane.status == "ACTIVE") {
-                            val Callc = totalCalculatedtimeinPercentage.toString()
-                            if (Callc.contains("E-")) {
-                                val ups = Callc.replace("E-", "")
-                                try {
-                                    val parsedInt = ups.toDouble()
-                                    val parsedI = parsedInt.toInt() + 1
-                                    holder.progressBar.progress = 100 - parsedI
-                                } catch (nfe: NumberFormatException) {
-                                    nfe.printStackTrace()
-                                }
-                            } else {
-                                holder.progressBar.progress =
-                                    100 - totalCalculatedtimeinPercentage.toInt()
-                            }
-                        } else {
-                            holder.progressBar.progress = totalCalculatedtimeinPercentage.toInt()
-                        }
+                        holder.progressBar.progress = calculatedTimeInPercentage.toInt()
                     }
                     override fun onFinish() {
                         if(lane.status == "ACTIVE"){

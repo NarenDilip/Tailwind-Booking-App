@@ -2,13 +2,11 @@ package com.kos.tailwindbookingapp
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.kos.tailwindbookingapp.model.LaneSession
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 object Util {
@@ -23,27 +21,16 @@ object Util {
         val total: Long = (endTime - System.currentTimeMillis()) * 100 / (endTime - startTime)
         val percentage: Double = (100 - total).toDouble()
         if (percentage > 90) {
-            return 90.0;
+            return 95.0
         }
-        return percentage;
+        return percentage
     }
-
-    fun getProgressinMilli(endTime: Long, startTime: Long): Long {
-        val total: Long = (System.currentTimeMillis() - endTime) * 100 / (endTime - startTime)
-//        val percentage: Double = (100 - total).toDouble()
-//        if (percentage > 90) {
-//            return 90.0;
-//        }
-        return total;
-    }
-
 
     fun getActiveProgress(endTime: Long, startTime: Long): Double {
         return (System.currentTimeMillis() - endTime) * 100 / (startTime - endTime).toDouble()
     }
 
     fun getEndTime(createdTime: Long): Long {
-//        val seconds: Long = TimeUnit.MILLISECONDS.toSeconds(createdTime)
         return createdTime + 60 * 60000
     }
 
@@ -59,10 +46,10 @@ object Util {
         return getMilliSecondsFromDate(lane.startedOn.toString())
     }
 
-    fun getMilliSecondsFromDate(utcTime: String?): Long {
+    fun getMilliSecondsFromDate(utcTime: String): Long {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
         val date1 = dateFormat.parse(utcTime)
-        return date1.time
+        return date1!!.time
     }
 
     fun getTimeoutStartedTime(lane: LaneSession): Long {
@@ -100,33 +87,26 @@ object Util {
     }
 
     fun getTimeMilliSeconds(lane: LaneSession): Long {
-        if (lane.status == "IDLE") {
+        return if (lane.status == "IDLE") {
             val addOnTime = getEndTime(getCreatedTime(lane))
-            val curretTime = System.currentTimeMillis()
-            val calculatedTime = timeDifferenceCalc(addOnTime, curretTime)
-            return calculatedTime;
+            timeDifferenceCalc(addOnTime, System.currentTimeMillis())
         } else if (lane.status == "ACTIVE" && lane.startedOn != null) {
             val endTime = getEndActiveTime(lane)
-            val curretTime = System.currentTimeMillis()
-            val calculatedTime = timeDifferenceCalc(endTime, curretTime)
-           return calculatedTime
+            timeDifferenceCalc(endTime, System.currentTimeMillis())
         } else if (lane.status == "TIMEOUT") {
             val createdTime = getTimeoutStartedTime(lane)
             val addOnTime = getEndTime(createdTime)
-            val curretTime = System.currentTimeMillis()
-            val calculatedTime = timeDifferenceCalc(addOnTime, curretTime)
-            return calculatedTime
+            timeDifferenceCalc(addOnTime, System.currentTimeMillis())
         } else {
-            return 0
+            0
         }
     }
 
-    private fun timeDifferenceCalc(addOnTime: Long, curretTime: Long): Long {
-        var calculatedOutput = 0
-        if (addOnTime > curretTime) {
-            calculatedOutput = (addOnTime - curretTime).toInt()
+    private fun timeDifferenceCalc(addOnTime: Long, currentTime: Long): Long {
+        val calculatedOutput: Int = if (addOnTime > currentTime) {
+            (addOnTime - currentTime).toInt()
         } else {
-            calculatedOutput = (curretTime - addOnTime).toInt()
+            (currentTime - addOnTime).toInt()
         }
         return calculatedOutput.toLong();
     }

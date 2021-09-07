@@ -27,6 +27,7 @@
                 android:layout_gravity="center"
                 android:indeterminate="false"
                 android:max="100"
+                android:progress="100"
                 android:padding="0dp"
                 android:progressDrawable="@drawable/orange_circle_progress" />
 

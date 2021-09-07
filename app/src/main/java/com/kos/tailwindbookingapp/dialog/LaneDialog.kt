@@ -25,6 +25,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
     var timeSlotPosition:Int = -1
     var timeSlotsAdapter:TimeSlotsAdapter?=null
     var playerAdapter:PlayerAdapter?=null
+    var timeSlot:Int = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -104,9 +105,9 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         playerRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         playerRecyclerView?.adapter = playerAdapter
         timeSlotsAdapter = TimeSlotsAdapter(requireActivity(), object : TimeSlotsAdapter.Callback {
-            override fun viewTimeSlot(timeSlot: Int, position: Int) {
+            override fun viewTimeSlot(timeSlotSelection: Int, position: Int) {
                 timeSlotPosition = position
-                laneSession.duration = timeSlot
+                timeSlot = timeSlotSelection
             }
 
             override fun laneTimeExtend() {
@@ -117,7 +118,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
                                 defaultTimeSlots[
                                         timeSlotPosition] +
                                         time
-                            updateTimeSlots(updatedTime)
+                            updateExtendedTime(updatedTime)
                         }
 
                     })
@@ -135,19 +136,13 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
             playerAdapter?.updatePlayerView(players.indexOf(laneSession.noOfPlayers))
             timeSlotsAdapter!!.updateTimeView(defaultTimeSlots.indexOf(laneSession.duration))
             playerPosition = players.indexOf(laneSession.noOfPlayers)
-            timeSlotPosition = defaultTimeSlots.indexOf(laneSession.duration)
+            if(defaultTimeSlots.indexOf(laneSession.duration) == -1){
+                updateExtendedTime(laneSession.duration)
+            }
         }
-        if(defaultTimeSlots.indexOf(laneSession.duration) == -1){
-            updateTimeSlots(laneSession.duration)
-        }
+
     }
 
-    private fun updateTimeSlots(extraTime:Int){
-        updateExtendedTime(extraTime)
-        timeSlotsAdapter?.notifyDataSetChanged()
-        timeSlotPosition = defaultTimeSlots.indexOf(extraTime)
-        timeSlotsAdapter!!.updateTimeView(timeSlotPosition)
-    }
 
     private fun updateExtendedTime(updatedTime:Int){
         defaultTimeSlots
@@ -157,6 +152,13 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         defaultTimeSlots.clear()
         defaultTimeSlots.addAll(hashSet)
         defaultTimeSlots.sort()
+        refreshTimeSlotView()
+    }
+
+    private fun refreshTimeSlotView(){
+        timeSlotPosition = defaultTimeSlots.indexOf(laneSession.duration)
+        timeSlotsAdapter!!.updateTimeView(timeSlotPosition)
+        timeSlotsAdapter?.notifyDataSetChanged()
     }
 
     private fun validateLaneSession() {
@@ -173,9 +175,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         val isSameTimeSlot = defaultTimeSlots[timeSlotPosition] == laneSession.duration
         val isSamePlayerSlot = players[playerPosition] == laneSession.noOfPlayers
         if (timeSlotPosition != -1 && !isSameTimeSlot) {
-            val timeDuration = laneSession.duration
-            val extraTime = defaultTimeSlots[timeSlotPosition] - timeDuration
-            laneSession.extraTime = extraTime
+            laneSession.extraTime = defaultTimeSlots[timeSlotPosition] - laneSession.duration
         } else {
             laneSession.extraTime = 0
         }
