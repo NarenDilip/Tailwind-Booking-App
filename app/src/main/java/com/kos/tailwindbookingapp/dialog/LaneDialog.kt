@@ -195,7 +195,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         val jsonObject = JsonObject()
         jsonObject.addProperty("lane_id", laneSession.laneId)
         jsonObject.addProperty("created_by", AppPreference[requireContext(), "login_user", ""])
-        jsonObject.addProperty("duration", laneSession.duration)
+        jsonObject.addProperty("duration", timeSlot)
         jsonObject.addProperty("extra_time", 0)
         jsonObject.addProperty("no_of_players", laneSession.noOfPlayers)
         print("Update Lane session - $jsonObject");
