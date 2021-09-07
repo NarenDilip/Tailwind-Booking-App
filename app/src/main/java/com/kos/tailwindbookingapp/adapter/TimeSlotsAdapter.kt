@@ -3,6 +3,8 @@ package com.kos.tailwindbookingapp.adapter
 import android.content.Context
 import android.graphics.Point
 import android.graphics.drawable.BitmapDrawable
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import android.view.ViewGroup
 import android.widget.PopupWindow
@@ -26,6 +28,7 @@ class TimeSlotsAdapter internal constructor(
 ) :
     RecyclerView.Adapter<TimeSlotsAdapter.ViewHolder>() {
     private var rowIndex = -1
+    private var isLoadFirst = true
     var mPopupwindow: PopupWindow? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -60,6 +63,10 @@ class TimeSlotsAdapter internal constructor(
                 holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_yellow)
                 holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.black))
                 holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.black))
+                if(isLoadFirst && laneSession.isOccupied){
+                    Handler(Looper.getMainLooper()).postDelayed({ showPopup(holder, mPopupwindow!!) },50)
+
+                }
             } else {
                 holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_black)
                 if (validateTimeSlot(lane = laneSession, index = holder.adapterPosition)) {
@@ -80,6 +87,7 @@ class TimeSlotsAdapter internal constructor(
                 if(laneSession.isOccupied){
                     showPopup(holder, mPopupwindow!!)
                 }
+                isLoadFirst = false
                 updateTimeView(holder.adapterPosition)
             }
 
