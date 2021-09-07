@@ -77,7 +77,9 @@ class TimeSlotsAdapter internal constructor(
             }
             holder.timeSlotRootView.setOnClickListener {
                 callback.viewTimeSlot(lane, holder.adapterPosition)
-                showPopup(holder, mPopupwindow!!)
+                if(laneSession.isOccupied){
+                    showPopup(holder, mPopupwindow!!)
+                }
                 updateTimeView(holder.adapterPosition)
             }
 
