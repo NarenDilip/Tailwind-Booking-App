@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">K-OS</string>
-    <string name="app_crew">KREW</string>
+    <string name="app_crew">KReW</string>
     <string name="app_login">Login</string>
     <string name="getstart">Get Started</string>
-    <string name="app_login_content">Verify username to get started</string>
+    <string name="app_login_content">Verify phone number to get started</string>
     <string name="app_kos_krew">K•OS Krew</string>
     <string name="app_lanes">Lanes</string>
     <string name="app_extension">Extension</string>
@@ -23,7 +23,7 @@
     <string name="end_session">End Session</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="app_player_empty">NO OF PLAYERS CANT BE EMPTY</string>
+    <string name="app_player_empty">NO OF PLAYERS CAN\'T BE EMPTY</string>
     <string name="app_time_empty">TIME SLOTS CANT BE EMPTY</string>
     <string name="update_package">Update Package</string>
 </resources>

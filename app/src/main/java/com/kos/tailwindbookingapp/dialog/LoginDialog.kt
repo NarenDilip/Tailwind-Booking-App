@@ -29,7 +29,7 @@ class LoginDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        isCancelable = true
+        isCancelable = false
         setupView(view)
         setupClickListeners(view)
     }

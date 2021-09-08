@@ -71,6 +71,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         if(laneSession.isOccupied){
             sessionPassCodeView.visibility = View.VISIBLE
             sessionPassCodeView.text = "PASS CODE : ${laneSession.passCode}"
+            setPackageView.text ="Update Package"
         }
         laneLabelView.text = "Lane ${laneSession.laneId}"
         laneSessionViewModel =
@@ -118,7 +119,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
                                 defaultTimeSlots[
                                         timeSlotPosition] +
                                         time
-                            updateExtendedTime(updatedTime)
+                            updateExtendedTime(updatedTime,true)
                         }
 
                     })
@@ -144,7 +145,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
     }
 
 
-    private fun updateExtendedTime(updatedTime:Int){
+    private fun updateExtendedTime(updatedTime:Int,isConfirmed: Boolean?=false){
         defaultTimeSlots
             .add(updatedTime)
         val hashSet = HashSet<Int>()
@@ -152,13 +153,16 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         defaultTimeSlots.clear()
         defaultTimeSlots.addAll(hashSet)
         defaultTimeSlots.sort()
-        refreshTimeSlotView()
+        refreshTimeSlotView(updatedTime,isConfirmed!!)
     }
 
-    private fun refreshTimeSlotView(){
-        timeSlotPosition = defaultTimeSlots.indexOf(laneSession.duration)
+    private fun refreshTimeSlotView(updatedTime:Int,isConfirmed: Boolean){
+        timeSlotPosition = if (isConfirmed){
+            defaultTimeSlots.indexOf(updatedTime)
+        }else{
+            defaultTimeSlots.indexOf(laneSession.duration)
+        }
         timeSlotsAdapter!!.updateTimeView(timeSlotPosition)
-        timeSlotsAdapter?.notifyDataSetChanged()
     }
 
     private fun validateLaneSession() {

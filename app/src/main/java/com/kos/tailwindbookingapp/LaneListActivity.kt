@@ -1,6 +1,7 @@
 package com.kos.tailwindbookingapp
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,9 @@ import okhttp3.Response
 import com.here.oksse.OkSse
 import com.here.oksse.ServerSentEvent
 import com.kos.tailwindbookingapp.dialog.ConfirmationDialog
+import com.kos.tailwindbookingapp.dialog.LoginDialog
+import com.kos.tailwindbookingapp.ui.LoginScreen
+import com.kos.tailwindbookingapp.ui.SplashScreen
 
 
 class LaneListActivity : AppCompatActivity() {
@@ -38,7 +42,7 @@ class LaneListActivity : AppCompatActivity() {
         exitView.setOnClickListener {
             val confirmationDialog = ConfirmationDialog(object: ConfirmationDialog.Callback{
                 override fun yes() {
-                    finishAffinity()
+                    startActivity(Intent(this@LaneListActivity, SplashScreen::class.java))
                 }
 
                 override fun no() {
@@ -66,9 +70,9 @@ class LaneListActivity : AppCompatActivity() {
                 { laneListResponse ->
                     try {
                         if (laneListResponse != null) {
-                           for(lane in laneListResponse.lanes!!){
-                               AppDatabase.getAppDatabase(this).databaseDao().insertLaneSession(lane)
-                           }
+                            for(lane in laneListResponse.lanes!!){
+                                AppDatabase.getAppDatabase(this).databaseDao().insertLaneSession(lane)
+                            }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
