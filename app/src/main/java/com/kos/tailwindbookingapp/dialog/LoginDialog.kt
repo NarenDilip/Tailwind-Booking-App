@@ -1,5 +1,6 @@
 package com.kos.tailwindbookingapp.dialog
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,7 +30,7 @@ class LoginDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        isCancelable = true
+        isCancelable = false
         setupView(view)
         setupClickListeners(view)
     }
@@ -69,6 +70,9 @@ class LoginDialog : DialogFragment() {
         }
     }
 
+    private  fun dialog(){
+        Dialog(requireContext()).setCanceledOnTouchOutside(false)
+    }
     private fun setupView(view: View) {
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         userViewModel!!.init()

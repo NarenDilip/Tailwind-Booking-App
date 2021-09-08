@@ -61,14 +61,21 @@ class TimeSlotsAdapter internal constructor(
             holder.renderView(lane)
             if (rowIndex == holder.adapterPosition) {
                 holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_yellow)
+                holder.arrow.visibility = View.VISIBLE
                 holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.black))
                 holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.black))
-                if(isLoadFirst && laneSession.isOccupied){
-                    Handler(Looper.getMainLooper()).postDelayed({ showPopup(holder, mPopupwindow!!) },50)
+                if (isLoadFirst && laneSession.isOccupied) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        showPopup(
+                            holder,
+                            mPopupwindow!!
+                        )
+                    }, 50)
 
                 }
             } else {
                 holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_black)
+                holder.arrow.visibility = View.GONE
                 if (validateTimeSlot(lane = laneSession, index = holder.adapterPosition)) {
                     holder.timeSlotRootView.isEnabled = false
                     holder.timeSlotView.setTextColor(
@@ -84,7 +91,7 @@ class TimeSlotsAdapter internal constructor(
             }
             holder.timeSlotRootView.setOnClickListener {
                 callback.viewTimeSlot(lane, holder.adapterPosition)
-                if(laneSession.isOccupied){
+                if (laneSession.isOccupied) {
                     showPopup(holder, mPopupwindow!!)
                 }
                 isLoadFirst = false
@@ -138,7 +145,7 @@ class TimeSlotsAdapter internal constructor(
         p.x = location.get(0)
         p.y = location.get(1)
 
-        val OFFSET_X = -150
+        val OFFSET_X = -250
         val OFFSET_Y = 0
 
         mPopupwindow.setBackgroundDrawable(BitmapDrawable())
@@ -161,6 +168,7 @@ class TimeSlotsAdapter internal constructor(
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         var timeSlotView: AppCompatTextView = v.findViewById(R.id.timeSlotView)
         var minLabelView: AppCompatTextView = v.findViewById(R.id.minLabelView)
+        var arrow: AppCompatTextView = v.findViewById(R.id.arrow)
         var timeSlotRootView: ConstraintLayout = v.findViewById(R.id.timeSlotRootView)
         fun renderView(player: Int) {
             try {
