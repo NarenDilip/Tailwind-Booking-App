@@ -21,7 +21,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         laneListResponseLiveData =
             laneRepository!!.getLanesResponseLiveData() as LiveData<LaneListResponse>
         userRepository = UserRepository()
-        loginResponseLiveData = userRepository!!.getLoginResponseLiveData() as LiveData<LaneSession>
+        loginResponseLiveData = userRepository!!.getLoginResponseLiveData()
     }
 
     fun getLogin() {
