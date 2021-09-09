@@ -163,7 +163,6 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
             defaultTimeSlots.indexOf(laneSession.duration)
         }
         timeSlotsAdapter!!.updateTimeView(timeSlotPosition)
-//        timeSlotsAdapter?.notifyDataSetChanged()
     }
 
     private fun validateLaneSession() {

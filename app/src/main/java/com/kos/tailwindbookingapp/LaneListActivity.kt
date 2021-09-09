@@ -70,9 +70,9 @@ class LaneListActivity : AppCompatActivity() {
                 { laneListResponse ->
                     try {
                         if (laneListResponse != null) {
-                           for(lane in laneListResponse.lanes!!){
-                               AppDatabase.getAppDatabase(this).databaseDao().insertLaneSession(lane)
-                           }
+                            for(lane in laneListResponse.lanes!!){
+                                AppDatabase.getAppDatabase(this).databaseDao().insertLaneSession(lane)
+                            }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
