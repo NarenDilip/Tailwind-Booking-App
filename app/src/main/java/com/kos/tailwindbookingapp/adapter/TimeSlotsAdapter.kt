@@ -61,7 +61,9 @@ class TimeSlotsAdapter internal constructor(
             holder.renderView(lane)
             if (rowIndex == holder.adapterPosition) {
                 holder.timeSlotRootView.setBackgroundResource(R.drawable.rectangle_shape_yellow)
-                holder.arrow.visibility = View.VISIBLE
+                if (laneSession.status == "IDLE" || laneSession.status == "TIMEOUT" || laneSession.status == "ACTIVE"){
+                    holder.arrow.visibility = View.VISIBLE
+                }
                 holder.timeSlotView.setTextColor(ContextCompat.getColor(context, R.color.black))
                 holder.minLabelView.setTextColor(ContextCompat.getColor(context, R.color.black))
                 if (isLoadFirst && laneSession.isOccupied) {
@@ -145,7 +147,7 @@ class TimeSlotsAdapter internal constructor(
         p.x = location.get(0)
         p.y = location.get(1)
 
-        val OFFSET_X = -250
+        val OFFSET_X = -200
         val OFFSET_Y = 0
 
         mPopupwindow.setBackgroundDrawable(BitmapDrawable())
