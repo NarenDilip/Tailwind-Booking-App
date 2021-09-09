@@ -1,9 +1,7 @@
 package com.kos.tailwindbookingapp.dialog
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.kos.tailwindbookingapp.R
@@ -36,7 +34,7 @@ class LaneTimeSlotExtendDialog(val laneSession: LaneSession, val callBack: Callb
                 return@setOnClickListener
             }
             if(extended_time.text.toString() != ""){
-                callBack.extendTimeSlot(extended_time.text.toString().toInt())
+                callBack.extendTimeSlot(extended_time.text.toString().toInt(),extended_time.hasFocus())
                 dismiss()
             }
         }
@@ -67,7 +65,7 @@ class LaneTimeSlotExtendDialog(val laneSession: LaneSession, val callBack: Callb
     }
 
     interface Callback {
-        fun extendTimeSlot(time:Int)
+        fun extendTimeSlot(time:Int,hasFocus:Boolean)
 
     }
 }

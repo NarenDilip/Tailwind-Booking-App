@@ -1,6 +1,8 @@
 package com.kos.tailwindbookingapp.dialog
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -114,12 +116,18 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
             override fun laneTimeExtend() {
                 val laneTimeSlotExtendDialog = LaneTimeSlotExtendDialog(laneSession = laneSession,
                     callBack = object:LaneTimeSlotExtendDialog.Callback{
-                        override fun extendTimeSlot(time: Int) {
+                        override fun extendTimeSlot(time: Int,hasFocus:Boolean) {
                             val updatedTime =
                                 defaultTimeSlots[
                                         timeSlotPosition] +
                                         time
-                            updateExtendedTime(updatedTime,true)
+                            if(hasFocus){
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    updateExtendedTime(updatedTime,true)
+                                },100)
+                            }else{
+                                updateExtendedTime(updatedTime,true)
+                            }
                         }
 
                     })
