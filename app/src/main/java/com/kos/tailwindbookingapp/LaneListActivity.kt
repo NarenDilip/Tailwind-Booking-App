@@ -104,7 +104,7 @@ class LaneListActivity : AppCompatActivity() {
 
     private fun listenLaneSession(context: Context) {
         val request: Request = Request.Builder()
-            .url("${Constants.SERVER_PREFIX_RESTAURANT_URL}on_update_sessions")
+            .url("${BuildConfig.SERVER_URL}on_update_sessions")
             .build()
         val okSse = OkSse()
         okSse.newServerSentEvent(request, object : ServerSentEvent.Listener {

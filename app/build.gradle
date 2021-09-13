@@ -15,14 +15,61 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionNameSuffix ''
     }
-
-    buildTypes {
+    signingConfigs{
         release {
+            storeFile file("docs/tailwind-prod-booking-keystore.jks")
+            storePassword 'bookPr23156&#YKO0!L'
+            keyAlias 'com.kos.tailwindbookingapp'
+            keyPassword 'bookPr23156&#YKO0!L'
+        }
+        dev {
+            storeFile file("docs/tailwind-qa-booking-keystore.jks")
+            storePassword 'bookQa123@#T%il9o0'
+            keyAlias 'com.kos.tailwindbookingapp'
+            keyPassword 'bookQa123@#T%il9o0'
+        }
+    }
+    buildTypes {
+        debug {
+            versionNameSuffix ".dev"
+            debuggable true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources false
+        }
+        release {
+            debuggable false
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+        }
+
+
+    }
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            getProps("./config/dev.props").each {p->
+                buildConfigField 'String',p.key,p.value
+            }
+            versionNameSuffix " dev"
+        }
+        qa {
+            getProps("./config/qa.props").each {p->
+                buildConfigField 'String',p.key,p.value
+            }
+            versionNameSuffix " qa"
+            signingConfig android.signingConfigs.dev
+        }
+        production {
+            getProps("./config/prod.props").each {p->
+                buildConfigField 'String',p.key,p.value
+            }
+            versionNameSuffix " beta"
+            signingConfig android.signingConfigs.release
         }
     }
     compileOptions {
@@ -32,6 +79,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+}
+
+def getProps(path) {
+    Properties props = new Properties()
+    props.load(new FileInputStream(file(path)))
+    return props
 }
 
 dependencies {
@@ -56,7 +109,7 @@ dependencies {
     def room_version = "2.2.6"
 
     implementation "androidx.room:room-common:$room_version"
-    implementation"androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-    kapt"androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }

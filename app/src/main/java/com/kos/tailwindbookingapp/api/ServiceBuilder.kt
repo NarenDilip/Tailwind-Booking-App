@@ -1,5 +1,6 @@
 package com.tailwind.kos.api
 
+import com.kos.tailwindbookingapp.BuildConfig
 import com.kos.tailwindbookingapp.Constants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -9,7 +10,7 @@ object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(Constants.SERVER_PREFIX_RESTAURANT_URL)
+        .baseUrl(BuildConfig.SERVER_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

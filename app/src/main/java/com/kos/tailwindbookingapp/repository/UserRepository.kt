@@ -2,6 +2,7 @@ package com.kos.tailwindbookingapp.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
+import com.kos.tailwindbookingapp.BuildConfig
 import com.kos.tailwindbookingapp.Constants
 import com.kos.tailwindbookingapp.model.LaneSession
 import com.tailwind.kos.api.ApiInterface
@@ -40,7 +41,7 @@ class UserRepository {
     init {
         val client = OkHttpClient.Builder().build()
         apiInterface = Retrofit.Builder()
-            .baseUrl(Constants.SERVER_PREFIX_RESTAURANT_URL)
+            .baseUrl(BuildConfig.SERVER_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
