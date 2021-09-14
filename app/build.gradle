@@ -20,10 +20,10 @@ android {
     }
     signingConfigs{
         release {
-            storeFile file("docs/tailwind-prod-booking-keystore.jks")
-            storePassword 'bookPr23156&#YKO0!L'
+            storeFile file("docs/tailwind-book-production-keystore.jks")
+            storePassword 'bo580$@O0!!90HKL'
             keyAlias 'com.kos.tailwindbookingapp'
-            keyPassword 'bookPr23156&#YKO0!L'
+            keyPassword 'bo580$@O0!!90HKL'
         }
         dev {
             storeFile file("docs/tailwind-qa-booking-keystore.jks")
@@ -34,7 +34,6 @@ android {
     }
     buildTypes {
         debug {
-            versionNameSuffix ".dev"
             debuggable true
             minifyEnabled false
             shrinkResources false
