@@ -53,7 +53,7 @@ object Util {
     }
 
     fun getTimeoutStartedTime(lane: LaneSession): Long {
-        return getStartedTime(lane) + lane.duration * 60000
+        return getStartedTime(lane) + lane.duration * 60000 + lane.pauseTime
     }
 
     fun getEndActiveTime(lane: LaneSession): Long {
