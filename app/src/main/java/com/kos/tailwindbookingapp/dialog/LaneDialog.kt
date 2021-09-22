@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.dialog_lane.*
 class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
     private var laneSessionViewModel: LaneSessionViewModel? = null
     var players = arrayListOf(1, 2, 3, 4, 5, 6, 7, 8)
-    var defaultTimeSlots = arrayListOf( 1,10,30, 60, 90, 120, 150, 180, 210, 240)
+    var defaultTimeSlots = arrayListOf( 10,30, 60, 90, 120, 150, 180, 210, 240)
     var playerPosition:Int = -1
     var timeSlotPosition:Int = -1
     var timeSlotsAdapter:TimeSlotsAdapter?=null
