@@ -54,7 +54,16 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
         }
         setPackageView.setOnClickListener {
             try {
-                validateLaneSession()
+                val isSameTimeSlot = defaultTimeSlots[timeSlotPosition] == laneSession.duration
+                val isSamePlayerSlot = players[playerPosition] == laneSession.noOfPlayers
+                if (laneSession.status == "TIMEOUT") {
+                    if (isSamePlayerSlot && isSameTimeSlot) {
+                        dismiss()
+                    } else {
+                        validateLaneSession()
+                    }
+                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -70,10 +79,10 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
     }
 
     private fun setupView(view: View) {
-        if(laneSession.isOccupied){
+        if (laneSession.isOccupied) {
             sessionPassCodeView.visibility = View.VISIBLE
             sessionPassCodeView.text = "PASS CODE : ${laneSession.passCode}"
-            setPackageView.text ="Update Package"
+            setPackageView.text = "Update Package"
         }
         laneLabelView.text = "Lane ${laneSession.laneId}"
         laneSessionViewModel =
@@ -101,7 +110,7 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
                 })
         playerAdapter = PlayerAdapter(requireActivity(), object : PlayerAdapter.Callback {
             override fun viewPlayer(playerCount: Int, position: Int) {
-                laneSession.noOfPlayers = playerCount
+                //laneSession.noOfPlayers = playerCount
                 playerPosition = position
             }
         }, players)
@@ -234,6 +243,4 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
             height.toInt()
         )
     }
-
-
 }
