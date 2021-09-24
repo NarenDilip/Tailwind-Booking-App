@@ -62,6 +62,8 @@ class LaneDialog(val laneSession: LaneSession) : DialogFragment() {
                     } else {
                         validateLaneSession()
                     }
+                }else{
+                    validateLaneSession()
                 }
 
             } catch (e: Exception) {
